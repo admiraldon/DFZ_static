@@ -102,6 +102,14 @@
 					"documentation": "https://automaticcss.com/docs/global-border-system/"
 				},
 				{
+					"id": "option-inverted-radius-framework",
+					"title": "Inverted Radius Support",
+					"type": "toggle",
+					"tooltip": "Activate utilities and framework for inverted radius.",
+					"default": "off",
+					"documentation": "https://automaticcss.com/docs/inverted-radius-framework/"
+				},
+				{
 					"id": "option-radius-sizes",
 					"title": "Generate Extra Radius Sizes",
 					"type": "toggle",

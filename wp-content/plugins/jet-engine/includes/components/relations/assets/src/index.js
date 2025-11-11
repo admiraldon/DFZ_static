@@ -13,6 +13,8 @@ const {
 	Fragment
 } = wp.element;
 
+const $ = jQuery;
+
 class App extends Component {
 
 	constructor( props ) {
@@ -30,6 +32,119 @@ class App extends Component {
 
 		this.fetchItems();
 
+		if ( this.isBlockEditor() ) {
+			this.onBlockEditorSavePost();
+		} else {
+			$( '#post, #edittag, #your-profile, .cx-form' ).on( 'submit', this.onSubmitForm.bind( this ) );
+		}
+
+	}
+
+	isBlockEditor() {
+		return $( 'body' ).hasClass( 'block-editor-page' );
+	}
+
+	onBlockEditorSavePost() {
+		var self         = this,
+			editor       = wp.data.dispatch( 'core/editor' ),
+			editorSelect = wp.data.select( 'core/editor' ),
+			savePost     = editor.savePost;
+
+		if ( window?.cxInterfaceBuilderAPI ) {
+			savePost = window.cxInterfaceBuilderAPI.savePost;
+		}
+
+		editor.savePost = function( options ) {
+			options = options || {};
+
+			if ( options.isAutosave || options.isPreview ) {
+				return savePost( options );
+			}
+
+			var isDraft = ['draft', 'auto-draft'].includes( editorSelect.getEditedPostAttribute( 'status' ) );
+
+			if ( isDraft ) {
+				return savePost( options );
+			}
+
+			if ( ! self.hasErrors() ) {
+				return savePost( options );
+			}
+
+			self.scrollToFirstErrorField();
+		};
+	}
+
+	hasErrors() {
+		return !! document.querySelector( '.jet-engine-rels.required[data-items="0"]' );
+	}
+
+	onSubmitForm( event ) {
+		if ( this.hasErrors() ) {
+			this.scrollToFirstErrorField();
+			event.preventDefault();
+		}
+	}
+
+	highlightError( element ) {
+		if ( element.classList.contains( 'blink' ) ) {
+			return;
+		}
+
+		element.classList.add( 'blink' );
+
+		setTimeout( () => {
+			element.classList.remove( 'blink' );
+		}, 500 );
+	}
+
+	scrollToFirstErrorField() {
+		var $field = $( '.jet-engine-rels.required[data-items="0"]' ).first();
+
+		if ( ! $field.length ) {
+			return;
+		}
+
+		let element = $field[0],
+		    box = element.closest( '[id^="related_jet_engine_rel_"]' );
+
+		if ( ! box ) {
+			box = element.closest( '[id^="jet_engine_rel_"]' );
+		}
+
+		element = box || element;
+
+		let $scrollSelector = $( 'html, body' ),
+		    scrollTop = $( element ).offset().top,
+		    offset = 70;
+
+		if ( this.isBlockEditor() ) {
+
+			if ( $( 'body' ).hasClass( 'is-fullscreen-mode' ) ) {
+				offset += 20;
+			} else {
+				offset += 60;
+			}
+
+			if ( $field.closest( '.interface-interface-skeleton__sidebar' ).length ) {
+				$scrollSelector = $( '#editor .interface-interface-skeleton__sidebar' );
+				offset += 50;
+			} else {
+				$scrollSelector = $( '#editor .interface-interface-skeleton__content' );
+			}
+
+			scrollTop += $scrollSelector.scrollTop();
+		}
+
+		$scrollSelector.stop().animate(
+			{ scrollTop: scrollTop - offset },
+			{
+				duration: 500,
+				complete: () => {
+					this.highlightError( element );
+				}
+			}
+		);
 	}
 
 	fetchItems() {
@@ -154,13 +269,24 @@ class App extends Component {
 		return style;
 	}
 
+	isValid() {
+		return ! this.props.isRequired || this?.state?.relatedItems?.length;
+	}
+
 	render() {
 
 		const buttonStyle = { margin: '0 10px 0 0' };
 
+		let className = 'jet-engine-rels';
+		
+		if ( this.props.isRequired ) {
+			className += ' required';
+		}
+		
 		return ( <div
-				className="jet-engine-rels"
+				className={ className }
 				style={ this.getBusyStyles() }
+				data-items={ this?.state?.relatedItems?.length || 0 }
 			>
 			{ ( this.state.connectNew || this.state.createNew ) && <RelatedItemModal
 				{ ...this.props }
@@ -221,6 +347,11 @@ class App extends Component {
 					this.reorderItems( newItems, reorderedCB );
 				} }
 			/>
+			{ ! this.isValid() && 
+				<div class="jet-rel--required-error">
+					{ this.props.labels?.requiredError || "Should have at least one related item." }
+				</div>
+			}
 		</div> );
 	}
 
@@ -230,6 +361,21 @@ for ( var i = 0; i < window.JetEngineRelationsControls.length; i++ ) {
 
 	let control = window.JetEngineRelationsControls[ i ];
 	const controlEl = document.getElementById( control.relEl );
+
+	control.metaFields.forEach(
+		function( field, i ) {
+			if ( field.type !== 'checkbox' || ! field?.options?.length ) {
+				return;
+			}
+
+			control.metaFields[i].options = field.options.map(
+				function( opt ) {
+					opt.value = opt.value.toString instanceof Function ? opt.value.toString() : opt.value;
+					return opt;
+				}
+			);
+		}
+	);
 
 	if ( controlEl ) {
 		render(
@@ -243,6 +389,7 @@ for ( var i = 0; i < window.JetEngineRelationsControls.length; i++ ) {
 				controlObjectName={ control.object }
 				isParentProcessed={ control.isParentProcessed }
 				createFields={ control.createFields }
+				isRequired={ control.isRequired }
 			/>,
 			controlEl
 		);

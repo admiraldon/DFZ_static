@@ -25,6 +25,9 @@ const COMPONENT_MAP = {
 	'text': {
 		componentPath: 'Settings/Inputs/TextInput',
 	},
+	'password': {
+		componentPath: 'Settings/Inputs/PasswordInput',
+	},
 	'textarea': {
 		componentPath: 'Settings/Inputs/TextAreaInput',
 	},
@@ -97,6 +100,12 @@ const COMPONENT_MAP = {
 	'cookiedatabase_sync': {
 		componentPath: 'Settings/Cookiedatabase/CookieDatabaseSyncControl',
 	},
+	'translation_management': {
+		componentPath: 'Settings/Translations/TranslationManagementControl',
+	},
+	'translation_automation': {
+		componentPath: 'Settings/Translations/TranslationAutomationControl',
+	},
 	'documents_menu': {
 		componentPath: 'Settings/DocumentsMenu/DocumentsMenuControl',
 	},
@@ -164,7 +173,7 @@ const COMPONENT_MAP = {
 		componentPath: 'Settings/CookieBannerPreview/BannerLogoControl',
 	},
 	'support': {
-		componentPath: 'Settings/Support',
+		componentPath: 'Settings/Support/Support',
 	},
 	'security_measures': {
 		componentPath: 'Settings/SecurityMeasures/SecurityMeasures',
@@ -174,6 +183,12 @@ const COMPONENT_MAP = {
 	},
 	'copy-multisite': {
 		componentPath: 'Settings/Multisite/CopyMultisite',
+	},
+	'websitescan_status': {
+		componentPath: 'Settings/WebSiteScan/WebSiteScanStatus',
+	},
+	'websitescan_actions': {
+		componentPath: 'Settings/WebSiteScan/WebSiteScanActions',
 	}
 };
 

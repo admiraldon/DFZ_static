@@ -22,6 +22,15 @@
 				window.elementorFrontend?.hooks?.addAction( 'frontend/element_ready/' + widget, callback );
 			});
 
+			window.addEventListener(
+				'jet-engine/maps/google/info-box-open',
+				JetEngineMaps.initHandlersOnEvent
+			);
+
+			elementorFrontend.elements.$window.on(
+				'elementor/nested-tabs/activate',
+				JetEngineMaps.nestedWidgetsReInit
+			);
 		},
 
 		initBlocks: function( $scope ) {
@@ -67,6 +76,23 @@
 			}
 
 			JetEngineMaps.widgetMap($scope);
+		},
+
+		nestedWidgetsReInit: function( e, content ) {
+			if ( mapProvider.getId() !== 'mapbox' ) {
+				return;
+			}
+
+			const mapWidgets = $( content ).find( '[data-widget_type="jet-engine-maps-listing.default"]:not(.nested-reinited)' );
+
+			mapWidgets.each( ( i, el ) => {
+				const $mapContainer = $( el ).find( '.jet-map-listing' );
+				const $mapWidget = $( el );
+
+				$mapContainer.attr( 'id', '' );
+				JetEngineMaps.widgetMap( $mapWidget );
+				$mapWidget.addClass( 'nested-reinited' );
+			} );
 		},
 
 		widgetMap: function( $scope ) {
@@ -134,7 +160,13 @@
 				} );
 
 				mapProvider.closePopup( infowindow, function() {
+					if ( activeInfoWindow?.map ) {
+						activeInfoWindow.map.isInternalInteraction = false;
+					}
+
 					activeInfoWindow = false;
+
+					map.jetPlugins.isOpeningPopup = false;
 				}, map );
 
 				mapProvider.openPopup( marker, function( event ) {
@@ -142,6 +174,9 @@
 					if ( event && event.stopPropagation ) {
 						event.stopPropagation();
 					}
+
+					map.jetPlugins.isOpeningPopup = true;
+					clearTimeout( map.jetPlugins?.isOpeningPopupTimer );
 
 					if ( infowindow.contentIsSet() ) {
 
@@ -153,6 +188,8 @@
 							activeInfoWindow.close();
 						}
 
+						setCenterByMarker( marker );
+
 						infowindow.setMap( map );
 						infowindow.draw();
 						infowindow.open( map, marker );
@@ -161,7 +198,10 @@
 
 						activeInfoWindow = infowindow;
 
-						setCenterByMarker( marker );
+						map.jetPlugins.isOpeningPopupTimer = setTimeout(
+							() =>  map.jetPlugins.isOpeningPopup = false,
+							+( JetEngineSettings?.mapSyncFilter?.debounceTime ?? 500 ) + 10
+						);
 
 						return;
 
@@ -199,6 +239,26 @@
 						api += '&element_id=' + mapID;
 					}
 
+					if ( window.JetSmartFilters?.filterGroups ) {
+						const filterGroups = window.JetSmartFilters.filterGroups;
+
+						for ( const groupName in filterGroups ) {
+							if ( ! groupName.includes( 'jet-engine-maps/' ) ) {
+								continue;
+							}
+
+							if ( filterGroups[ groupName ]?.$provider?.[0] === $container[0] ) {
+								const filtersUrl = filterGroups[ groupName ].getUrl( true );
+
+								if ( filtersUrl ) {
+									api += '&jsf=' + filtersUrl.replace( '?jsf=', '' );
+								}
+
+								break;
+							}
+						}
+					}
+
 					jQuery.ajax({
 						url: api,
 						type: 'GET',
@@ -224,11 +284,13 @@
 
 						activeInfoWindow = infowindow;
 
-						if ( window.bricksIsFrontend ) {
-							document.dispatchEvent(
-								new CustomEvent("bricks/ajax/query_result/displayed")
-							);
-						}
+						map.jetPlugins.isOpeningPopupTimer = setTimeout(
+							() =>  map.jetPlugins.isOpeningPopup = false,
+							+( JetEngineSettings?.mapSyncFilter?.debounceTime ?? 500 ) + 10
+						);
+
+						// Re-init Bricks scripts
+						JetEngineMaps.reinitBricksScripts( mapID );
 
 					}).fail( function( error ) {
 
@@ -241,6 +303,11 @@
 
 						activeInfoWindow = infowindow;
 
+						map.jetPlugins.isOpeningPopupTimer = setTimeout(
+							() =>  map.jetPlugins.isOpeningPopup = false,
+							+( JetEngineSettings?.mapSyncFilter?.debounceTime ?? 500 ) + 10
+						);
+
 					});
 
 					setCenterByMarker( marker );
@@ -251,11 +318,15 @@
 
 			var setCenterByMarker = function( marker ) {
 
+				if ( ! general.centeringOnOpen ) {
+					return;
+				}
+
 				if ( JetEngineMaps.preventPanToMarker ) {
 					return;
 				}
 
-				if ( ! general.centeringOnOpen ) {
+				if ( map.jetPlugins.autoCenterBlock ) {
 					return;
 				}
 
@@ -264,6 +335,8 @@
 					position: mapProvider.getMarkerPosition( marker ),
 					zoom: general.zoomOnOpen ? +general.zoomOnOpen : false,
 				} );
+
+				map.isInternalInteraction = false;
 			};
 
 			var setAutoCenter = function() {
@@ -333,12 +406,66 @@
 
 			}
 
-			map    = mapProvider.initMap( $container[0], mapSettings );
+			map = mapProvider.initMap( $container[0], mapSettings );
+
+			map.jetPlugins ??= {};
+			
 			bounds = mapProvider.initBounds();
 			width  = parseInt( general.width, 10 );
 			offset = parseInt( general.offset, 10 );
 
 			$container.data( 'mapInstance', map );
+
+			if ( general.user_location_enabled && navigator.geolocation ) {
+					
+				navigator.geolocation.watchPosition(
+					( position ) => {
+
+						const userMarker = general.user_location_marker;
+
+						if ( ! userMarker ) {
+							return;
+						}
+
+						if ( map.jetPlugins.userLocationMarker ) {
+							mapProvider.removeMarker( map.jetPlugins.userLocationMarker );
+						}
+
+						let content = 'Your Location';
+						let coords = { lat: position.coords.latitude, lng: position.coords.longitude };
+
+						switch ( userMarker.type ) {
+							case 'image':
+								content = '<img src="' + userMarker.url + '" class="jet-map-user-location-marker-image '+ ( userMarker.additional_classes || '' ) +'" alt="" style="cursor: pointer;">';
+								break;
+							case 'text':
+								content = userMarker.html.replace( '_marker_label_', general.user_location_label );
+								break;
+							case 'icon':
+								content = userMarker.html;
+						}
+						
+						map.jetPlugins.userLocationMarker = mapProvider.addMarker(
+							{
+								content: content.replace( 'cursor: pointer;', 'cursor: default;' ),
+								position: coords,
+								map: map,
+								shadow: false,
+							}
+						);
+
+						$( window ).trigger( 'jet-engine/frontend-maps/user-position/update', [ $container, coords, mapProvider ] );
+					},
+					( error ) => {
+						$( window ).trigger( 'jet-engine/frontend-maps/user-position/error', [ error, $container ] );
+					},
+					{
+						enableHighAccuracy: true,
+						maximumAge: 30,
+						timeout: Infinity
+					}
+				);
+			}
 
 			if ( markers ) {
 				$.each( markers, function( index, markerData ) {
@@ -383,7 +510,7 @@
 
 				bounds = mapProvider.initBounds();
 
-				if ( response.markers.length ) {
+				if ( response.markers?.length ) {
 
 					for ( var i = 0; i < response.markers.length; i++ ) {
 						let marker = response.markers[ i ];
@@ -397,9 +524,11 @@
 
 				}
 
-				if ( autoCenter || ! customCenter ) {
+				if ( ! map.jetPlugins.autoCenterBlock && ( autoCenter || ! customCenter ) ) {
 					setAutoCenter();
 				}
+
+				map.jetPlugins.autoCenterBlock = false;
 
 			} );
 
@@ -465,6 +594,13 @@
 				}
 
 				mapProvider.triggerOpenPopup( marker );
+
+				if ( settings.scroll_to_map ) {
+					const container = mapProvider.getContainer( map );
+					const offset = $( container ).offset();
+					
+					$( 'html, body' ).animate( { scrollTop: ( offset.top - 30 ) } );
+				}
 			}
 
 			JetEngineMaps.preventPanToMarker = false;
@@ -496,23 +632,28 @@
 			window.JetPlugins.init( $selector );
 
 			// Legacy Elementor-only init
-			$selector.find( '[data-element_type]' ).each( function() {
-				var $this       = $( this ),
-					elementType = $this.data( 'element_type' );
-
-				if ( !elementType ) {
-					return;
-				}
-
-				if ( 'widget' === elementType ) {
-					elementType = $this.data( 'widget_type' );
-					window.elementorFrontend.hooks.doAction( 'frontend/element_ready/widget', $this, $ );
-				}
-
-				window.elementorFrontend.hooks.doAction( 'frontend/element_ready/global', $this, $ );
-				window.elementorFrontend.hooks.doAction( 'frontend/element_ready/' + elementType, $this, $ );
-
-			} );
+			//
+			// added check for window.elementorFrontend.hooks to prevent JS error if Elementor Listing Item is used in Block editor Map Listing
+			// https://github.com/Crocoblock/issues-tracker/issues/13998
+			if ( window?.elementorFrontend?.hooks ) {
+				$selector.find( '[data-element_type]' ).each( function() {
+					var $this       = $( this ),
+					    elementType = $this.data( 'element_type' );
+	
+					if ( !elementType ) {
+						return;
+					}
+	
+					if ( 'widget' === elementType ) {
+						elementType = $this.data( 'widget_type' );
+						window.elementorFrontend.hooks.doAction( 'frontend/element_ready/widget', $this, $ );
+					}
+	
+					window.elementorFrontend.hooks.doAction( 'frontend/element_ready/global', $this, $ );
+					window.elementorFrontend.hooks.doAction( 'frontend/element_ready/' + elementType, $this, $ );
+	
+				} );
+			}
 
 			if ( window.JetPopupFrontend && window.JetPopupFrontend.initAttachedPopups ) {
 				window.JetPopupFrontend.initAttachedPopups( $selector );
@@ -524,6 +665,14 @@
 				JetEngine.commonEvents( $selector );
 			}
 
+		},
+
+		initHandlersOnEvent: function( event ) {
+			if ( ! event.detail || ! event.detail.container ) {
+				return;
+			}
+
+			JetEngineMaps.initHandlers( $( event.detail.container ) );
 		},
 
 		// Restart the map when it is displayed
@@ -554,6 +703,82 @@
 			return false;
 		},
 
+		//map - map instance
+		//bounds - an object containing 'south', 'west', 'north', 'east' coordinates
+		dispatchMapSyncEvent: function( map, bounds ) {
+
+			const mapDiv = mapProvider.getContainer( map );
+			//debounce event dispatch to prevent unnecessary filter requests on zoom/pan change
+			clearTimeout( mapDiv?.JetEngineMapDebounceTimer );
+
+			let debounceTime = + ( JetEngineSettings?.mapSyncFilter?.debounceTime ?? 500 );
+			
+			if ( ! isFinite( debounceTime ) ) {
+				debounceTime = 1000;
+			}
+
+			mapDiv.JetEngineMapDebounceTimer = setTimeout(
+				JetEngineMaps.dispatchMapSyncEventImmediate,
+				debounceTime,
+				mapDiv,
+				bounds,
+				map
+			);
+		},
+
+		dispatchMapSyncEventImmediate: function( mapDiv, bounds, map ) {
+			if ( map.isInternalInteraction ) {
+				map.isInternalInteraction = false;
+				return;
+			}
+
+			if ( map.jetPlugins.isOpeningPopup ) {
+				return;
+			}
+
+			const event = new CustomEvent(
+				"jet-engine/maps/update-sync-bounds",
+				{
+					detail: {
+						div: mapDiv,
+						bounds: bounds,
+						map: map,
+						mapProvider
+					},
+				}
+			);
+			
+			document.dispatchEvent( event );
+		},
+
+		dispatchMapSyncInitEvent: function( map ) {
+			const event = new CustomEvent(
+				"jet-engine/maps/init-sync-bounds",
+				{
+					detail: {
+						map: map,
+						div: mapProvider.getContainer( map ),
+						mapProvider
+					},
+				}
+			);
+			
+			document.dispatchEvent( event );
+		},
+
+		reinitBricksScripts: function (elementId) {
+			if (!window.bricksIsFrontend) {
+				return;
+			}
+
+			document.dispatchEvent(
+				new CustomEvent("bricks/ajax/query_result/displayed", {
+					detail: {
+						queryId: elementId || null
+					}
+				})
+			);
+		}
 	};
 
 	$( window ).on( 'elementor/frontend/init', JetEngineMaps.init );

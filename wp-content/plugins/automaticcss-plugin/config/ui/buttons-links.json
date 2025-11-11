@@ -6395,7 +6395,7 @@
 									"id": "external-link-indicator-not",
 									"title": "Indicator Exclusions",
 									"type": "textarea",
-									"default": ":has(> img, > figure, > picture, > svg)",
+									"default": ":has(img, > figure, > picture, > svg)",
 									"displayWhen": ["option-indicate-external-links", "on"],
 									"validation": {
 										"required": true
@@ -6767,6 +6767,21 @@
 									"default": "off",
 									"style": "",
 									"displayWhen": ["option-success-btn", "on"]
+								}
+							]
+						},
+						{
+							"id": "additional-button-options",
+							"title": "Additional Options",
+							"type": "accordion-container",
+							"content": [
+								{
+									"id": "btn-exclusion-selectors-user",
+									"title": "Exclude '.btn--' Selectors",
+									"type": "textarea",
+									"default": "",
+									"output": "quotes",
+									"tooltip": "Comma separated list of selectors to exclude from default button styling."
 								}
 							]
 						}

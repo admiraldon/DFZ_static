@@ -19,7 +19,8 @@
     border: 4px solid black;
     border-top-color: transparent;
     border-radius: 50%;
-    animation: jet-engine-query-spin 2s infinite linear;
+    -webkit-animation: jet-engine-query-spin 2s infinite linear;
+            animation: jet-engine-query-spin 2s infinite linear;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -36,6 +37,15 @@
     top: 30px;
     right: 30px;
     cursor: pointer;
+}
+
+@-webkit-keyframes jet-engine-query-spin {
+	0% {
+		transform: translate( -50%, -50% ) rotate(0deg);
+	}
+	100% {
+		transform: translate( -50%, -50% ) rotate(359deg);
+	}
 }
 
 @keyframes jet-engine-query-spin {
@@ -63,11 +73,11 @@
     padding: 0 15px;
 }
 
-:hover > .jet-engine-frontend-query-editor-buttons:has(> a.initialized), .jet-engine-frontend-query-editor-buttons:hover:has(> a.initialized) {
+:hover > .jet-engine-frontend-query-editor-buttons:has(> span.initialized), .jet-engine-frontend-query-editor-buttons:hover:has(> span.initialized) {
     opacity: 1;
 }
 
-.jet-engine-frontend-query-editor-buttons a.edit-button {
+.jet-engine-frontend-query-editor-buttons span.edit-button {
     background-color: #9d64ed;
     color: #fff;
     font-size: 12px;
@@ -78,4 +88,9 @@
     border-radius: 3px;
     outline: none;
     text-decoration: none;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+         user-select: none;
 }

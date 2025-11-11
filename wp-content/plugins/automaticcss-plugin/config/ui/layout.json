@@ -282,6 +282,16 @@
 			"type": "accordion-container",
 			"content": [
 				{
+					"id": "auto-grid-flow-option",
+					"title": "Flow Option",
+					"type": "select",
+					"default": "auto-fit",
+					"options": ["auto-fit", "auto-fill"],
+					"skip-if-empty": true,
+					"displayWhen": ["option-auto-grid", "on"],
+					"tooltip": "How should grid items flow in auto grids by default? 'Fit' instructs items to grow to take available space (first row only) and 'fill' will behave like a traditional grid."
+				},
+				{
 					"id": "auto-grid-aggressiveness",
 					"title": "Aggressiveness",
 					"type": "text",
@@ -301,6 +311,24 @@
 					"skip-if-empty": true,
 					"displayWhen": ["option-auto-grid", "on"],
 					"tooltip": "What breakpoint should auto-ratio grids (2-3, 3-2, etc.) stack at?"
+				},
+				{
+					"id": "auto-grid-force-even-column-count",
+					"title": "Force Even Columns",
+					"type": "toggle",
+					"default": "off",
+					"displayWhen": ["option-content-grid", "on"],
+					"tooltip": "If initial column count is even, force the grid to keep the column count even when stacking."
+				},
+				{
+					"id": "auto-grid-force-even-column-count-breakpoint",
+					"title": "Initial Breakpoint (EC)",
+					"type": "select",
+					"default": "s",
+					"options": ["xxl", "xl", "l", "m", "s", "xs"],
+					"skip-if-empty": true,
+					"displayWhen": ["option-content-grid", "on"],
+					"tooltip": "Which breakpoint should ACSS start to force even columns at when using 'Force Even Columns' or the even columns utility class? This affects the selected breakpoint and up."
 				}
 			]
 		},

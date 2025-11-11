@@ -426,6 +426,26 @@
 					]
 				}
 			]
+		},
+		{
+			"id": "gradient-fades",
+			"title": "Gradient Fades",
+			"type": "accordion-container",
+			"content": [
+				{
+					"id": "option-gradient-fades-clone",
+					"type": "clone",
+					"target": "option-gradient-fades"
+				},
+				{
+					"id": "gradient-fade-amount",
+					"title": "Default Fade Amount",
+					"type": "text",
+					"default": "25%",
+					"tooltip": "The default fade amount for gradient fades.",
+					"displayWhen": ["option-gradient-fades", "on"]
+				}
+			]
 		}
 	]
 }

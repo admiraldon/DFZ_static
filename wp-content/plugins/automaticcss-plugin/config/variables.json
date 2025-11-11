@@ -7831,6 +7831,12 @@
 			"valueoff": "off",
 			"default": "on"
 		},
+		"option-buttons-styles-enable": {
+			"type": "toggle",
+			"valueon": "on",
+			"valueoff": "off",
+			"default": "off"
+		},
 		"option-action-main-trans": {
 			"type": "toggle",
 			"valueon": "on",

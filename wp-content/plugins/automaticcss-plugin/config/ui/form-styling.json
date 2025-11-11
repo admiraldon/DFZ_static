@@ -154,21 +154,18 @@
 											"id": "f-label-inside-position-left",
 											"title": "Left Position (on focus)",
 											"type": "text",
-
 											"default": "1.5em"
 										},
 										{
 											"id": "f-label-inside-position-top",
 											"title": "Top Position (on focus)",
 											"type": "text",
-
 											"default": "0"
 										},
 										{
 											"id": "f-label-inside-scale",
 											"title": "Scale (on focus)",
 											"type": "text",
-
 											"default": "1"
 										}
 									]
@@ -220,7 +217,6 @@
 									"id": "f-legend-text-weight",
 									"title": "Font Weight",
 									"type": "select",
-
 									"options": [
 										"",
 										"100",
@@ -534,7 +530,10 @@
 									"id": "form-btn-spacing-section",
 									"title": "Spacing",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-btn-margin-top",
@@ -570,7 +569,10 @@
 									"id": "form-btn-border-section",
 									"title": "Border",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-btn-border-style",
@@ -596,7 +598,10 @@
 									"id": "form-btn-text-section",
 									"title": "Text",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-btn-text-size-container",
@@ -732,6 +737,15 @@
 										"inherit"
 									],
 									"default": "",
+									"validation": {
+										"required": false
+									}
+								},
+								{
+									"id": "f-option-label-line-height",
+									"title": "Line Height",
+									"type": "number",
+									"default": 1.4,
 									"validation": {
 										"required": false
 									}
@@ -946,7 +960,12 @@
 											"title": "Text Align",
 											"type": "select",
 											"default": "center",
-											"options": ["left", "center", "right", "inherit"]
+											"options": [
+												"left",
+												"center",
+												"right",
+												"inherit"
+											]
 										},
 										{
 											"id": "f-tab-text-transform",
@@ -1121,20 +1140,44 @@
 							"content": [
 								{
 									"id": "f-light-input-bg-section",
-									"title": "Background",
+									"title": "Background & Border",
 									"type": "section-container",
 									"content": [
 										{
-											"id": "f-light-input-background",
-											"title": "Background Color",
-											"type": "text",
-											"default": "var(--white)"
+											"id": "f-light-input",
+											"type": "hover-container",
+											"content": [
+												{
+													"id": "f-light-input-background",
+													"title": "Background Color",
+													"type": "text",
+													"default": "var(--white)"
+												},
+												{
+													"id": "f-light-input-color-background-hover",
+													"title": "Background Color",
+													"type": "text",
+													"default": "var(--white)"
+												}
+											]
 										},
 										{
-											"id": "f-light-input-border-color",
-											"title": "Border Color",
-											"type": "text",
-											"default": "var(--neutral-light)"
+											"id": "f-light-input-border",
+											"type": "hover-container",
+											"content": [
+												{
+													"id": "f-light-input-border-color",
+													"title": "Border Color",
+													"type": "text",
+													"default": "var(--neutral-light)"
+												},
+												{
+													"id": "f-light-input-border-color-hover",
+													"title": "Border Color",
+													"type": "text",
+													"default": "var(--neutral-light)"
+												}
+											]
 										}
 									]
 								},
@@ -1144,16 +1187,40 @@
 									"type": "section-container",
 									"content": [
 										{
-											"id": "f-light-input-text-color",
-											"title": "Text Color",
-											"type": "text",
-											"default": "var(--neutral-dark)"
+											"id": "f-light-input-text",
+											"type": "hover-container",
+											"content": [
+												{
+													"id": "f-light-input-text-color",
+													"title": "Text Color",
+													"type": "text",
+													"default": "var(--neutral-dark)"
+												},
+												{
+													"id": "f-light-input-text-color-hover",
+													"title": "Text Color",
+													"type": "text",
+													"default": "var(--neutral-dark)"
+												}
+											]
 										},
 										{
-											"id": "f-light-input-placeholder-color",
-											"title": "Placeholder Text Color",
-											"type": "text",
-											"default": "var(--neutral-dark)"
+											"id": "f-light-input-placeholder",
+											"type": "hover-container",
+											"content": [
+												{
+													"id": "f-light-input-placeholder-color",
+													"title": "Placeholder Text Color",
+													"type": "text",
+													"default": "var(--neutral-dark)"
+												},
+												{
+													"id": "f-light-input-placeholder-color-hover",
+													"title": "Placeholder Text Color",
+													"type": "text",
+													"default": "var(--neutral-dark)"
+												}
+											]
 										},
 										{
 											"id": "f-light-input-placeholder-opacity",
@@ -1174,7 +1241,10 @@
 									"id": "f-light-btn-bg-section",
 									"title": "Background",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-light-btn-background",
@@ -1194,7 +1264,10 @@
 									"id": "f-light-btn-border-section",
 									"title": "Border",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-light-btn-border-color",
@@ -1214,7 +1287,10 @@
 									"id": "f-light-btn-text-section",
 									"title": "Text",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-light-btn-text-color",
@@ -1234,7 +1310,10 @@
 									"id": "f-light-submit-button-style",
 									"title": "Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "primary",
 									"default": "primary",
 									"output": "quotes"
@@ -1250,7 +1329,10 @@
 									"id": "f-light-secondary-btn-section",
 									"title": "Secondary Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-light-secondary-btn-background-color",
@@ -1282,7 +1364,10 @@
 									"id": "f-light-secondary-button-style",
 									"title": "Secondary Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "primary.btn--outline",
 									"default": "primary.btn--outline",
 									"output": "quotes"
@@ -1291,7 +1376,10 @@
 									"id": "f-light-next-btn-section",
 									"title": "Next Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-light-next-btn-background-color",
@@ -1323,7 +1411,10 @@
 									"id": "f-light-next-button-style",
 									"title": "Next Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "primary",
 									"default": "primary",
 									"output": "quotes"
@@ -1332,7 +1423,10 @@
 									"id": "f-light-previous-btn-section",
 									"title": "Previous Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-light-prev-btn-background-color",
@@ -1364,7 +1458,10 @@
 									"id": "f-light-previous-button-style",
 									"title": "Previous Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "primary.btn--outline",
 									"default": "primary.btn--outline",
 									"output": "quotes"
@@ -1373,7 +1470,10 @@
 									"id": "f-light-save-btn-section",
 									"title": "Save Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-light-save-btn-background-color",
@@ -1405,7 +1505,10 @@
 									"id": "f-light-save-button-style",
 									"title": "Save Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "success",
 									"default": "success",
 									"output": "quotes"
@@ -1414,7 +1517,10 @@
 									"id": "f-light-reset-btn-section",
 									"title": "Reset Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-light-reset-btn-background-color",
@@ -1446,7 +1552,10 @@
 									"id": "f-light-reset-button-style",
 									"title": "Reset Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "neutral",
 									"default": "neutral",
 									"output": "quotes"
@@ -1455,7 +1564,10 @@
 									"id": "f-light-clear-btn-section",
 									"title": "Clear Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-light-clear-btn-background-color",
@@ -1487,7 +1599,10 @@
 									"id": "f-light-clear-button-style",
 									"title": "Clear Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "neutral.btn--outline",
 									"default": "neutral.btn--outline",
 									"output": "quotes"
@@ -1496,7 +1611,10 @@
 									"id": "f-light-upload-btn-section",
 									"title": "Upload Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-light-upload-btn-background-color",
@@ -1528,7 +1646,10 @@
 									"id": "f-light-upload-button-style",
 									"title": "Upload Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "primary",
 									"default": "primary",
 									"output": "quotes"
@@ -1566,11 +1687,8 @@
 								},
 								{
 									"id": "f-light-radio-button-section",
-									"title": "Radios as Buttons",
+									"title": "Radios and Checkboxes as Buttons",
 									"type": "section-container",
-									"environment": {
-										"include": "fluentform"
-									},
 									"content": [
 										{
 											"id": "f-light-radio-button-style",
@@ -1589,7 +1707,6 @@
 										}
 									]
 								}
-
 							]
 						},
 						{
@@ -1846,20 +1963,44 @@
 							"content": [
 								{
 									"id": "f-dark-input-bg-section",
-									"title": "Background",
+									"title": "Background & Border",
 									"type": "section-container",
 									"content": [
 										{
-											"id": "f-dark-input-background",
-											"title": "Background Color",
-											"type": "text",
-											"default": "var(--neutral-dark)"
+											"id": "f-dark-input",
+											"type": "hover-container",
+											"content": [
+												{
+													"id": "f-dark-input-background",
+													"title": "Background Color",
+													"type": "text",
+													"default": "var(--neutral-dark)"
+												},
+												{
+													"id": "f-dark-input-color-background-hover",
+													"title": "Background Color",
+													"type": "text",
+													"default": "var(--neutral-dark)"
+												}
+											]
 										},
 										{
-											"id": "f-dark-input-border-color",
-											"title": "Border Color",
-											"type": "text",
-											"default": "var(--neutral-semi-dark)"
+											"id": "f-dark-input-border",
+											"type": "hover-container",
+											"content": [
+												{
+													"id": "f-dark-input-border-color",
+													"title": "Border Color",
+													"type": "text",
+													"default": "var(--neutral-semi-dark)"
+												},
+												{
+													"id": "f-dark-input-border-color-hover",
+													"title": "Border Color",
+													"type": "text",
+													"default": "var(--neutral-semi-dark)"
+												}
+											]
 										}
 									]
 								},
@@ -1869,16 +2010,40 @@
 									"type": "section-container",
 									"content": [
 										{
-											"id": "f-dark-input-text-color",
-											"title": "Text Color",
-											"type": "text",
-											"default": "var(--neutral-ultra-light)"
+											"id": "f-dark-input-text",
+											"type": "hover-container",
+											"content": [
+												{
+													"id": "f-dark-input-text-color",
+													"title": "Text Color",
+													"type": "text",
+													"default": "var(--neutral-ultra-light)"
+												},
+												{
+													"id": "f-dark-input-text-color-hover",
+													"title": "Text Color",
+													"type": "text",
+													"default": "var(--neutral-ultra-light)"
+												}
+											]
 										},
 										{
-											"id": "f-dark-input-placeholder-color",
-											"title": "Placeholder Text Color",
-											"type": "text",
-											"default": "var(--neutral-ultra-light)"
+											"id": "f-dark-input-placeholder",
+											"type": "hover-container",
+											"content": [
+												{
+													"id": "f-dark-input-placeholder-color",
+													"title": "Placeholder Text Color",
+													"type": "text",
+													"default": "var(--neutral-ultra-light)"
+												},
+												{
+													"id": "f-dark-input-placeholder-color-hover",
+													"title": "Placeholder Text Color",
+													"type": "text",
+													"default": "var(--neutral-ultra-light)"
+												}
+											]
 										},
 										{
 											"id": "f-dark-input-placeholder-opacity",
@@ -1899,7 +2064,10 @@
 									"id": "f-dark-btn-bg-section",
 									"title": "Background",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-dark-btn-background",
@@ -1919,7 +2087,10 @@
 									"id": "f-dark-btn-border-section",
 									"title": "Border",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-dark-btn-border-color",
@@ -1939,7 +2110,10 @@
 									"id": "f-dark-btn-text-section",
 									"title": "Text",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-dark-btn-text-color",
@@ -1959,7 +2133,10 @@
 									"id": "f-dark-submit-button-style",
 									"title": "Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "primary",
 									"default": "primary",
 									"output": "quotes"
@@ -1975,7 +2152,10 @@
 									"id": "f-dark-secondary-btn-section",
 									"title": "Secondary Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-dark-secondary-btn-background-color",
@@ -2007,7 +2187,10 @@
 									"id": "f-dark-secondary-button-style",
 									"title": "Secondary Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "primary.btn--outline",
 									"default": "primary.btn--outline",
 									"output": "quotes"
@@ -2016,7 +2199,10 @@
 									"id": "f-dark-next-btn-section",
 									"title": "Next Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-dark-next-btn-background-color",
@@ -2048,7 +2234,10 @@
 									"id": "f-dark-next-button-style",
 									"title": "Next Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "primary.btn--outline",
 									"default": "primary.btn--outline",
 									"output": "quotes"
@@ -2057,7 +2246,10 @@
 									"id": "f-dark-previous-btn-section",
 									"title": "Previous Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-dark-prev-btn-background-color",
@@ -2089,7 +2281,10 @@
 									"id": "f-dark-previous-button-style",
 									"title": "Previous Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "primary.btn--outline",
 									"default": "primary.btn--outline",
 									"output": "quotes"
@@ -2098,7 +2293,10 @@
 									"id": "f-dark-save-btn-section",
 									"title": "Save Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-dark-save-btn-background-color",
@@ -2130,7 +2328,10 @@
 									"id": "f-dark-save-button-style",
 									"title": "Save Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "success",
 									"default": "success",
 									"output": "quotes"
@@ -2139,7 +2340,10 @@
 									"id": "f-dark-reset-btn-section",
 									"title": "Reset Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-dark-reset-btn-background-color",
@@ -2171,7 +2375,10 @@
 									"id": "f-dark-reset-button-style",
 									"title": "Reset Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "neutral",
 									"default": "neutral",
 									"output": "quotes"
@@ -2180,7 +2387,10 @@
 									"id": "f-dark-clear-btn-section",
 									"title": "Clear Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-dark-clear-btn-background-color",
@@ -2212,7 +2422,10 @@
 									"id": "f-dark-clear-button-style",
 									"title": "Clear Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "neutral.btn--outline",
 									"default": "neutral.btn--outline",
 									"output": "quotes"
@@ -2221,7 +2434,10 @@
 									"id": "f-dark-upload-btn-section",
 									"title": "Upload Button",
 									"type": "section-container",
-									"displayWhen": ["option-f-use-global-buttons", "off"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"off"
+									],
 									"content": [
 										{
 											"id": "f-dark-upload-btn-background-color",
@@ -2253,7 +2469,10 @@
 									"id": "f-dark-upload-button-style",
 									"title": "Upload Button Style",
 									"type": "text",
-									"displayWhen": ["option-f-use-global-buttons", "on"],
+									"displayWhen": [
+										"option-f-use-global-buttons",
+										"on"
+									],
 									"placeholder": "primary",
 									"default": "primary",
 									"output": "quotes"
@@ -2281,7 +2500,7 @@
 									"id": "f-dark-option-border-color",
 									"title": "Border Color",
 									"type": "text",
-									"default": "var(--neutral)"
+									"default": "var(--neutral-light)"
 								},
 								{
 									"id": "f-dark-select-arrow-color",
@@ -2291,11 +2510,8 @@
 								},
 								{
 									"id": "f-dark-radio-button-section",
-									"title": "Radios as Buttons",
+									"title": "Radios and Checkboxes as Buttons",
 									"type": "section-container",
-									"environment": {
-										"include": "fluentform"
-									},
 									"content": [
 										{
 											"id": "f-dark-radio-button-style",

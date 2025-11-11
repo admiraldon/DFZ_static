@@ -1,4 +1,4 @@
-/* File: automatic-bricks.css - Version: 3.2.7 - Generated: 2024-12-12 10:43:40 */
+/* File: automatic-bricks.css - Version: 3.3.6 - Generated: 2025-11-11 13:44:48 */
 body.bricks-is-frontend.bricks-is-frontend :focus {
   outline: none;
   box-shadow: none;
@@ -133,7 +133,8 @@ body.bricks-is-frontend.bricks-is-frontend .focus--black *:focus, body.bricks-is
   --btn-min-width: fit-content;
   background: var(--btn-background);
   color: var(--btn-text-color);
-  padding: var(--btn-padding-block) var(--btn-padding-inline);
+  padding-block: var(--btn-padding-block);
+  padding-inline: var(--btn-padding-inline);
   min-inline-size: var(--btn-min-width);
   line-height: var(--btn-line-height);
   font-size: var(--btn-font-size, var(--text-m));
@@ -256,6 +257,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .h--1, .h--2, .h--3, .h--4
 }
 h1 {
   font-size: var(--h1);
+  max-width: var(--h1-max-width);
 }
 h2 {
   font-size: var(--h2);
@@ -476,10 +478,11 @@ body:where(.bricks-is-frontend), body:where(:not(.bricks-is-frontend)) {
   --btn-border-color-hover: var(--neutral-light);
   --focus-color: var(--neutral-light);
 }
-[class*="btn--"]:where(:not(.btn--none)) {
+[class*="btn--"]:where(:not(.btn--none, .wp-block-button)) {
   background: var(--btn-background);
   color: var(--btn-text-color);
-  padding: var(--btn-padding-block) var(--btn-padding-inline);
+  padding-block: var(--btn-padding-block);
+  padding-inline: var(--btn-padding-inline);
   min-inline-size: var(--btn-min-width);
   line-height: var(--btn-line-height);
   font-size: var(--btn-font-size, var(--text-m));
@@ -497,14 +500,14 @@ body:where(.bricks-is-frontend), body:where(:not(.bricks-is-frontend)) {
   text-align: var(--btn-text-align, center);
 }
 @media (hover: hover) and (pointer: fine) {
-  [class*="btn--"]:where(:not(.btn--none)):hover {
+  [class*="btn--"]:where(:not(.btn--none, .wp-block-button)):hover {
     background: var(--btn-background-hover);
     color: var(--btn-text-color-hover);
     border-color: var(--btn-border-color-hover);
     text-decoration: var(--btn-text-decoration-hover);
   }
 }
-[class*="btn--"]:where(:not(.btn--none)):focus {
+[class*="btn--"]:where(:not(.btn--none, .wp-block-button)):focus {
   outline-style: solid;
   outline-color: var(--focus-color);
   outline-width: var(--focus-width);

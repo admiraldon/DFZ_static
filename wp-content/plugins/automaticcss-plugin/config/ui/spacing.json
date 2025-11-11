@@ -425,8 +425,8 @@
 					"id": "smart-spacing-duplicate-margin-elements",
 					"title": "Avoid Duplicate Margins",
 					"type": "textarea",
-					"default": "\":is(figure, blockquote, ul, ol)\"",
-					"placeholder": "\":is(figure, blockquote, ul, ol)\"",
+					"default": "\":is(figure, blockquote, ul, ol):where(:not(:first-child))\"",
+					"placeholder": "\":is(figure, blockquote, ul, ol):where(:not(:first-child))\"",
 					"tooltip": "Remove paragraph and flow spacing from adjacent siblings of the following elements:",
 					"documentation": "https://automaticcss.com/docs/smart-spacing/",
 					"validation": {

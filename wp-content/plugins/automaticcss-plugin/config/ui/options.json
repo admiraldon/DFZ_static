@@ -163,6 +163,18 @@
 						{
 							"target": "option-container-queries",
 							"value": "off"
+						},
+						{
+							"target": "option-gradient-fades",
+							"value": "off"
+						},
+						{
+							"target": "option-smart-spacing-clone",
+							"value": "off"
+						},
+						{
+							"target": "option-content-grid-clone",
+							"value": "off"
 						}
 					]
 				},
@@ -172,7 +184,10 @@
 					"type": "toggle",
 					"default": "off",
 					"tooltip": "Turn off utility class modules that typically aren't needed with a custom class workflow.",
-					"displayWhen": ["option-classless", "off"],
+					"displayWhen": [
+						"option-classless",
+						"off"
+					],
 					"control": [
 						{
 							"target": "option-margin",
@@ -257,6 +272,10 @@
 						{
 							"target": "option-divider-classes",
 							"value": "off"
+						},
+						{
+							"target": "option-gradient-fades",
+							"value": "off"
 						}
 					]
 				},
@@ -303,6 +322,11 @@
 					"style": "",
 					"tooltip": "Classes to change section block padding.",
 					"documentation": "https://automaticcss.com/docs/section-padding-classes/"
+				},
+				{
+					"id": "option-smart-spacing-clone",
+					"type": "clone",
+					"target": "option-smart-spacing"
 				},
 				{
 					"id": "option-basic-text-classes",
@@ -469,6 +493,11 @@
 					"documentation": "https://automaticcss.com/docs/flex-grids-flexbox-grids/"
 				},
 				{
+					"id": "option-content-grid-clone",
+					"type": "clone",
+					"target": "option-content-grid"
+				},
+				{
 					"id": "option-gaps",
 					"title": "Gap",
 					"type": "toggle",
@@ -584,6 +613,13 @@
 					"style": "",
 					"tooltip": "Classes for establishing container queries.",
 					"documentation": ""
+				},
+				{
+					"id": "option-gradient-fades",
+					"title": "Fade Classes",
+					"type": "toggle",
+					"default": "on",
+					"tooltip": "Fade classes for a gradient fade  out effect."
 				}
 			]
 		},
@@ -685,6 +721,15 @@
 					"style": ""
 				},
 				{
+					"id": "option-buttons-styles-enable",
+					"title": "Use Bricks UI for Buttons",
+					"tooltip": "Makes the Bricks button styles UI compatible with ACSS.",
+					"documentation": "",
+					"type": "toggle",
+					"default": "false",
+					"style": ""
+				},
+				{
 					"id": "option-bricks-color-swatches-checkerboard-enable",
 					"title": "Enhance Transparent Color Swatches",
 					"tooltip": "Adds a checkerboard background to the Bricks color swatches to better distinguish transparent colors.",
@@ -707,6 +752,33 @@
 					"type": "toggle",
 					"default": "off",
 					"style": ""
+				},
+				{
+					"id": "option-bricks-css-improved",
+					"title": "Improve CSS Editing",
+					"tooltip": "Improve the CSS editing experience in Bricks.",
+					"type": "toggle",
+					"default": "off",
+					"style": ""
+				},
+				{
+					"id": "option-bricks-css-first",
+					"title": "CSS First Styling in Bricks",
+					"tooltip": "Move the CSS panel to the top of Style tab.",
+					"type": "toggle",
+					"default": "off",
+					"style": ""
+				},
+				{
+					"id": "option-remove-deactivated-classes-from-globals",
+					"title": "Remove Deactivated Classes",
+					"type": "toggle",
+					"default": "on",
+					"style": "",
+					"environment": {
+						"include": "bricks"
+					},
+					"tooltip": "Remove deactivated classes from the Bricks database when saving ACSS settings."
 				}
 			]
 		},
@@ -832,7 +904,9 @@
 					"title": "Overflow Detection",
 					"type": "toggle",
 					"default": "off",
-					"cssClasses": ["overflow-detection"],
+					"cssClasses": [
+						"overflow-detection"
+					],
 					"target": "body",
 					"tooltip": "Activate outlines to help identify elements that are overflowing and causing horizontal scrolling."
 				}
@@ -857,7 +931,10 @@
 					"default": 90,
 					"skip-css-var": true,
 					"tooltip": "Show the ACSS admin bar dashboard trigger.",
-					"displayWhen": ["admin-bar-enabled", "on"]
+					"displayWhen": [
+						"admin-bar-enabled",
+						"on"
+					]
 				},
 				{
 					"id": "option-acss-dashboard-icon-display",
@@ -896,26 +973,15 @@
 			"type": "accordion-container",
 			"content": [
 				{
-					"id": "option-remove-deactivated-classes-from-globals",
-					"title": "Remove Deactivated Classes",
+					"id": "option-style-buttons-automatically",
+					"title": "Style Buttons Automatically",
 					"type": "toggle",
 					"default": "off",
 					"style": "",
 					"environment": {
-						"include": "bricks"
+						"exclude": "bricks"
 					},
-					"tooltip": "Remove classes from the Bricks database when they're deactivated in ACSS (Requires plugin reactivation if 'Sync on Save' is not enabled)."
-				},
-				{
-					"id": "option-refresh-globals-on-save",
-					"title": "Sync Class Status on Save",
-					"type": "toggle",
-					"default": "off",
-					"style": "",
-					"environment": {
-						"include": "bricks"
-					},
-					"tooltip": "Keep the Bricks database in sync with the ACSS class status on each save."
+					"tooltip": "Apply button styling automatically without the need for a utility class."
 				}
 			]
 		}

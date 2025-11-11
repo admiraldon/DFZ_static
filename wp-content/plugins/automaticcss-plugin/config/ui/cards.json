@@ -14,7 +14,7 @@
 			"default": "off",
 			"style": "primary",
 			"tooltip": "Enable the ACSS card framework.",
-			"documentation": "https://automaticcss.com/docs/cards/"
+			"documentation": "https://automaticcss.com/docs/card-framework/"
 		},
 		{
 			"id": "card-style-tabs",
@@ -22,7 +22,10 @@
 			"type": "tabs-container",
 			"style": "full-width",
 			"tooltip": "",
-			"displayWhen": ["option-cards", "on"],
+			"displayWhen": [
+				"option-cards",
+				"on"
+			],
 			"content": [
 				{
 					"id": "card-default-styles",
@@ -41,8 +44,10 @@
 									"type": "accordion-container",
 									"tooltip": "",
 									"description": "",
-
-									"displayWhen": ["option-cards", "on"],
+									"displayWhen": [
+										"option-cards",
+										"on"
+									],
 									"content": [
 										{
 											"id": "card-padding",
@@ -68,7 +73,6 @@
 									"type": "accordion-container",
 									"tooltip": "",
 									"description": "",
-
 									"content": [
 										{
 											"id": "card-heading-size",
@@ -85,6 +89,14 @@
 											"default": "var(--text-s)",
 											"tooltip": "Default size of card text.",
 											"documentation": "https://automaticcss.com/docs/card-framework/"
+										},
+										{
+											"id": "card-button-font-size",
+											"title": "Button Text Size",
+											"type": "text",
+											"default": "var(--text-s)",
+											"tooltip": "Default size of card buttons.",
+											"documentation": "https://automaticcss.com/docs/card-framework/"
 										}
 									]
 								},
@@ -94,7 +106,6 @@
 									"type": "accordion-container",
 									"tooltip": "",
 									"description": "",
-
 									"content": [
 										{
 											"id": "option-card-concentric-radius",
@@ -138,7 +149,10 @@
 											"default": "var(--radius)",
 											"tooltip": "Radius of the card border.",
 											"documentation": "https://automaticcss.com/docs/card-framework/",
-											"displayWhen": ["option-card-concentric-radius", "off"]
+											"displayWhen": [
+												"option-card-concentric-radius",
+												"off"
+											]
 										}
 									]
 								},
@@ -148,7 +162,6 @@
 									"type": "accordion-container",
 									"tooltip": "",
 									"description": "",
-
 									"content": [
 										{
 											"id": "card-icon-size",
@@ -174,7 +187,6 @@
 									"type": "accordion-container",
 									"tooltip": "",
 									"description": "",
-
 									"content": [
 										{
 											"id": "card-avatar-size",
@@ -224,7 +236,6 @@
 									"type": "accordion-container",
 									"tooltip": "",
 									"description": "",
-
 									"content": [
 										{
 											"id": "card-media-radius",
@@ -273,14 +284,28 @@
 							"type": "section-container",
 							"content": [
 								{
-									"id": "light-card-background",
-									"title": "Background",
-									"type": "text",
-									"default": "var(--white)",
-									"cssVariable": "--card-background",
-									"target": ":is([class*='card']:where(:not([class*='__'], [class*='--dark'], [class*='--alt'])))",
-									"tooltip": "Background of light cards. Accepts any valid background value.",
-									"documentation": "https://automaticcss.com/docs/card-framework/"
+									"id": "light-card-background-color",
+									"type": "hover-container",
+									"content": [
+										{
+											"id": "light-card-background",
+											"title": "Background",
+											"type": "text",
+											"default": "var(--white)",
+											"cssVariable": "--card-background",
+											"target": ":is([class*='card']:where(:not([class*='__'], [class*='--dark'], [class*='--alt'])))",
+											"tooltip": "Background of light cards. Accepts any valid background value.",
+											"documentation": "https://automaticcss.com/docs/card-framework/"
+										},
+										{
+											"id": "light-card-background-hover",
+											"title": "Background Hover",
+											"type": "text",
+											"default": "var(--light-card-background)",
+											"tooltip": "Background hover of light cards. Accepts any valid background value.",
+											"documentation": "https://automaticcss.com/docs/card-framework/"
+										}
+									]
 								},
 								{
 									"id": "light-card-heading-color",
@@ -342,7 +367,11 @@
 									"title": "Icon Style",
 									"type": "select",
 									"default": "light",
-									"options": ["light", "dark", "custom"],
+									"options": [
+										"light",
+										"dark",
+										"custom"
+									],
 									"output": "quotes",
 									"tooltip": "Icon style for light cards targeting [data-icon] elements.",
 									"documentation": "https://automaticcss.com/docs/card-framework/"
@@ -384,12 +413,26 @@
 							"type": "section-container",
 							"content": [
 								{
-									"id": "dark-card-background",
-									"title": "Background",
-									"type": "text",
-									"default": "var(--black)",
-									"tooltip": "Background of dark cards. Accepts any valid background value.",
-									"documentation": "https://automaticcss.com/docs/card-framework/"
+									"id": "dark-card-background-color",
+									"type": "hover-container",
+									"content": [
+										{
+											"id": "dark-card-background",
+											"title": "Background",
+											"type": "text",
+											"default": "var(--black)",
+											"tooltip": "Background of dark cards. Accepts any valid background value.",
+											"documentation": "https://automaticcss.com/docs/card-framework/"
+										},
+										{
+											"id": "dark-card-background-hover",
+											"title": "Background Hover",
+											"type": "text",
+											"default": "var(--dark-card-background)",
+											"tooltip": "Background hover of dark cards. Accepts any valid background value.",
+											"documentation": "https://automaticcss.com/docs/card-framework/"
+										}
+									]
 								},
 								{
 									"id": "dark-card-heading-color",
@@ -450,7 +493,11 @@
 									"title": "Icon Style",
 									"type": "select",
 									"default": "dark",
-									"options": ["light", "dark", "custom"],
+									"options": [
+										"light",
+										"dark",
+										"custom"
+									],
 									"tooltip": "Icon style for dark cards targeting [data-icon] elements.",
 									"documentation": "https://automaticcss.com/docs/card-framework/"
 								},
@@ -480,7 +527,10 @@
 			"id": "card-options-section",
 			"title": "Options",
 			"type": "section-container",
-			"displayWhen": ["option-cards", "on"],
+			"displayWhen": [
+				"option-cards",
+				"on"
+			],
 			"content": [
 				{
 					"id": "card-options",
@@ -492,7 +542,10 @@
 							"title": "Primary Card Style",
 							"type": "select",
 							"default": "Light",
-							"options": ["Light", "Dark"],
+							"options": [
+								"Light",
+								"Dark"
+							],
 							"tooltip": "Choose the primary/default card style.",
 							"documentation": "https://automaticcss.com/docs/card-framework/"
 						},
@@ -531,12 +584,15 @@
 							"id": "card-selector-auto",
 							"title": "Auto Card Selector",
 							"type": "textarea",
-							"default": ":is([class*='card']:where(:not([class*='__'], [class*='wrapper'])))",
+							"default": ":is([class*='card']:where(:not([class*='__'], [class*='wrapper'], [class*='cards'], [class*='group'])))",
 							"output": "quotes",
-							"placeholder": ":is([class*='card']:where(:not([class*='__'], [class*='wrapper'])))",
+							"placeholder": ":is([class*='card']:where(:not([class*='__'], [class*='wrapper'], [class*='cards'], [class*='group'])))",
 							"tooltip": "Control auto-card selection. You can exclude selectors by adding them inside the :not().",
 							"documentation": "https://automaticcss.com/docs/card-framework/",
-							"displayWhen": ["option-auto-card-selector", "on"]
+							"displayWhen": [
+								"option-auto-card-selector",
+								"on"
+							]
 						},
 						{
 							"id": "card-selectors",

@@ -9,6 +9,14 @@
 	],
 	"content": [
 		{
+			"id": "root-font-size",
+			"title": "Root Font Size",
+			"type": "percent",
+			"default": 100,
+			"tooltip": "The root font size for the document. Typically 62.5% or 100%.",
+			"documentation": "https://automaticcss.com/docs/fluid-text/"
+		},
+		{
 			"id": "typography-main-tabs",
 			"title": "Typography Tabs",
 			"type": "tabs-container",
@@ -19,14 +27,6 @@
 					"title": "Headings",
 					"type": "tab",
 					"content": [
-						{
-							"id": "root-font-size",
-							"title": "Root Font Size",
-							"type": "percent",
-							"default": 100,
-							"tooltip": "The root font size for the document. Typically 62.5% or 100%.",
-							"documentation": "https://automaticcss.com/docs/fluid-text/"
-						},
 						{
 							"id": "heading-base-size-group",
 							"type": "double-input",
@@ -148,7 +148,7 @@
 												"900",
 												"inherit"
 											],
-											"default": "",
+											"default": "700",
 											"cssVariable": "font-weight",
 											"target": "h1, h2, h3, h4, h5, h6",
 											"skip-if-empty": true,
@@ -326,7 +326,7 @@
 											"default": "100%",
 											"skip-if-empty": true,
 											"cssVariable": "max-width",
-											"target": "h1, .h--1, .h1",
+											"target": "h1",
 											"validation": {
 												"required": false
 											}
@@ -486,7 +486,7 @@
 											"default": "100%",
 											"skip-if-empty": true,
 											"cssVariable": "max-width",
-											"target": "h2, .h--2, .h2",
+											"target": "h2",
 											"validation": {
 												"required": false
 											}
@@ -646,7 +646,7 @@
 											"default": "100%",
 											"skip-if-empty": true,
 											"cssVariable": "max-width",
-											"target": "h3, .h--3, .h3",
+											"target": "h3",
 											"validation": {
 												"required": false
 											}
@@ -800,7 +800,7 @@
 											"default": "100%",
 											"skip-if-empty": true,
 											"cssVariable": "max-width",
-											"target": "h4, .h--4, .h4",
+											"target": "h4",
 											"validation": {
 												"required": false
 											}
@@ -960,7 +960,7 @@
 											"default": "100%",
 											"skip-if-empty": true,
 											"cssVariable": "max-width",
-											"target": "h5, .h--5, .h5",
+											"target": "h5",
 											"validation": {
 												"required": false
 											}
@@ -1120,7 +1120,7 @@
 											"default": "100%",
 											"skip-if-empty": true,
 											"cssVariable": "max-width",
-											"target": "h6, .h--6, .h6",
+											"target": "h6",
 											"validation": {
 												"required": false
 											}
@@ -1468,8 +1468,6 @@
 											"type": "text",
 											"default": "100%",
 											"skip-if-empty": true,
-											"cssVariable": "max-width",
-											"target": ".text--xxl",
 											"validation": {
 												"required": false
 											}
@@ -1599,8 +1597,6 @@
 											"type": "text",
 											"default": "100%",
 											"skip-if-empty": true,
-											"cssVariable": "max-width",
-											"target": ".text--xl",
 											"validation": {
 												"required": false
 											}
@@ -1730,8 +1726,6 @@
 											"type": "text",
 											"default": "100%",
 											"skip-if-empty": true,
-											"cssVariable": "max-width",
-											"target": ".text--l",
 											"validation": {
 												"required": false
 											}
@@ -1855,8 +1849,6 @@
 											"type": "text",
 											"default": "100%",
 											"skip-if-empty": true,
-											"cssVariable": "max-width",
-											"target": ".text--m",
 											"validation": {
 												"required": false
 											}
@@ -1986,8 +1978,6 @@
 											"type": "text",
 											"default": "100%",
 											"skip-if-empty": true,
-											"cssVariable": "max-width",
-											"target": ".text--s",
 											"validation": {
 												"required": false
 											}
@@ -2117,8 +2107,6 @@
 											"type": "text",
 											"default": "100%",
 											"skip-if-empty": true,
-											"cssVariable": "max-width",
-											"target": ".text--xs",
 											"validation": {
 												"required": false
 											}

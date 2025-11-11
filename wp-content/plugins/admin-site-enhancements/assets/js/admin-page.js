@@ -27,6 +27,70 @@
 
       });
 
+      // Search modules
+      var searchInput = $('#module-search-input');
+      
+      $(searchInput).keyup(delay(function (e) {
+         var searchVal = $(this).val();
+         var filterItems = $('[data-search-filter]');
+
+         if ( searchVal != '' ) {
+            setTimeout(function() {
+               $(searchInput).addClass('has-text-input');
+               $('.modules-tab').hide();
+               $('.search-tab').show();
+               $('.asenha-fields.section-visible').addClass('originally-visible');
+               $('.asenha-fields').removeClass('section-visible');
+               $('.asenha-fields').removeClass('section-hidden');
+               $('.asenha-fields').addClass('section-visible-for-search');
+               filterItems.parents('.asenha-toggle').addClass('result-is-hidden');
+               $('[data-search-filter][data-module-info*="' + searchVal.toLowerCase() + '"]').parents('.asenha-toggle').removeClass('result-is-hidden');
+            }, 250 );
+            refreshCodeMirror();
+         } else {
+            setTimeout(function() {
+               searchInput.removeClass('has-text-input');
+               filterItems.parents('.asenha-toggle').removeClass('result-is-hidden');
+               clear_search();
+               refreshCodeMirror();
+            }, 250 );
+         }
+      }, 200));
+
+      // Restore all results when the x button on search input field is clicked. 
+      // The click triggers a 'search' event we're listening to below
+
+      if ( searchInput.length > 0 ) {
+         document.getElementById("module-search-input").addEventListener("search", function(event) {
+            clear_search();
+            refreshCodeMirror();
+         });         
+      }
+      
+      // Ref: https://stackoverflow.com/a/1909508
+      function delay(fn, ms) {
+         let timer = 0
+         return function(...args) {
+            clearTimeout(timer)
+            timer = setTimeout(fn.bind(this, ...args), ms || 0)
+         }
+      }
+            
+      function clear_search() {
+            searchInput.removeClass('has-text-input');
+            $('[data-search-filter]').each( function() {
+               $(this).parents('.asenha-toggle').removeClass('result-is-hidden');
+               $('.modules-tab').show();
+               $('.search-tab').hide();
+               $('.asenha-fields').removeClass('section-visible-for-search');
+               $('.asenha-fields').addClass('section-hidden');
+               // Has no effect. Compensate with CSS .asenha-fields.section-visible.section-hidden { display: block; }
+               // $('.asenha-fields.originally-visible').removeClass('section-hidden'); 
+               $('.asenha-fields.originally-visible').addClass('section-visible');
+               $('.asenha-fields').removeClass('originally-visible');
+            });
+      }
+
       // Show all / less toggler for field options | Modified from https://codepen.io/symonsays/pen/rzgEgY
       $('.asenha-field-with-options.field-show-more > .show-more').click(function(e) {
 
@@ -59,18 +123,25 @@
                url: ajaxurl,
                data: {
                   'action':'send_test_email',
-                  'email_to': emailTo
+                  'email_to': emailTo,
+                  'nonce': adminPageVars.sendTestEmailNonce
                },
                success:function(data) {
                   var data = data.slice(0,-1); // remove strange trailing zero in string returned by AJAX call
                   var response = JSON.parse(data);
-
                   if ( response.status == 'success' ) {
                      setTimeout( function() {
                         $('.sending-test-email').hide();
-                        $('.test-email-result').show();
+                        // $('.test-email-result').show();
                         $('#test-email-success').show();
                      }, 1500);
+                  }
+                  if ( response.status == 'failed' ) {
+                     setTimeout( function() {
+                        $('.sending-test-email').hide();
+                        // $('.test-email-result').show();
+                        $('#test-email-failed').show();
+                     }, 1500);                     
                   }
                },
                error:function(errorThrown) {
@@ -85,7 +156,55 @@
          } else {
             alert( 'Please enter destination email address first.' );
          }
+      });
 
+      // Form Builder >> Send test email
+      $('#form-builder-send-test-email').click(function(e) {
+         e.preventDefault();
+         var emailTo = $('#form-builder-test-email-to').val();
+         var emailTemplate = $('.form-builder-email-template select').val();
+         if ( emailTo ) {
+            $('#form-builder-ajax-result').show();
+            $('.form-builder-sending-test-email').show();
+            $('.test-email-result').hide();
+            $('#form-builder-test-email-success').hide();
+            $('#form-builder-test-email-failed').hide();
+            $.ajax({
+               type: 'POST',
+               url: ajaxurl,
+               data: {
+                  action: 'formbuilder_test_email_template',
+                  email_template: emailTemplate,
+                  test_email: emailTo,
+                  nonce: adminPageVars.formBuilderSendTestEmailNonce
+               },
+               success:function(data) {
+                  var response = JSON.parse(data);
+                  if ( response.success ) {
+                     setTimeout( function() {
+                        $('.form-builder-sending-test-email').hide();
+                        $('#form-builder-test-email-success').show();
+                     }, 1500);
+                  }
+                  if ( ! response.success ) {
+                     setTimeout( function() {
+                        $('.form-builder-sending-test-email').hide();
+                        $('#form-builder-test-email-failed').show();
+                     }, 1500);                     
+                  }
+               },
+               error:function(errorThrown) {
+                  console.log(errorThrown);
+                  setTimeout( function() {
+                     $('.sending-test-email').hide();
+                     $('.test-email-result').show();
+                     $('#test-email-failed').show();
+                  }, 1500);
+               }
+            });
+         } else {
+            alert( 'Please enter destination email address first.' );
+         }
       });
 
       // Initialize data tables
@@ -120,6 +239,7 @@
       
       
       $('.enable-media-replacement').appendTo('.fields-content-management > table > tbody');
+      $('.disable-media-replacement-cache-busting').appendTo('.fields-content-management .enable-media-replacement .asenha-subfields');
       $('.enable-svg-upload').appendTo('.fields-content-management > table > tbody');
       $('.enable-svg-upload-for').appendTo('.fields-content-management .enable-svg-upload .asenha-subfields');
       $('.enable-avif-upload').appendTo('.fields-content-management > table > tbody');
@@ -134,6 +254,7 @@
       // Place fields into "Admin Interface" tab
       $('.hide-modify-elements').appendTo('.fields-admin-interface > table > tbody');
       $('.hide-ab-wp-logo-menu').appendTo('.fields-admin-interface .hide-modify-elements .asenha-subfields');
+      $('.hide-ab-site-menu').appendTo('.fields-admin-interface .hide-modify-elements .asenha-subfields');
       $('.hide-ab-customize-menu').appendTo('.fields-admin-interface .hide-modify-elements .asenha-subfields');
       $('.hide-ab-updates-menu').appendTo('.fields-admin-interface .hide-modify-elements .asenha-subfields');
       $('.hide-ab-comments-menu').appendTo('.fields-admin-interface .hide-modify-elements .asenha-subfields');
@@ -149,11 +270,13 @@
       $('.hide-admin-bar').appendTo('.fields-admin-interface > table > tbody');
       
       $('.hide-admin-bar-for').appendTo('.fields-admin-interface .hide-admin-bar .asenha-subfields');
+      $('.hide-admin-bar-always-show-for-admins').appendTo('.fields-admin-interface .hide-admin-bar .asenha-subfields');
+      
+      $('.hide-admin-bar-description').appendTo('.fields-admin-interface .hide-admin-bar .asenha-subfields');
       
       $('.wider-admin-menu').appendTo('.fields-admin-interface > table > tbody');
       $('.admin-menu-width').appendTo('.fields-admin-interface .wider-admin-menu .asenha-subfields');
       $('.customize-admin-menu').appendTo('.fields-admin-interface > table > tbody');
-      $('.custom-menu-order').appendTo('.fields-admin-interface .customize-admin-menu .asenha-subfields');
       
       $('.show-custom-taxonomy-filters').appendTo('.fields-admin-interface > table > tbody');
       
@@ -180,6 +303,7 @@
       // Place fields into "Log In | Log Out" tab
       $('.change-login-url').appendTo('.fields-login-logout > table > tbody');
       $('.custom-login-slug').appendTo('.fields-login-logout .change-login-url .asenha-subfields');
+      $('.custom-login-whitelist').appendTo('.fields-login-logout .change-login-url .asenha-subfields');
       $('.default-login-redirect-slug').appendTo('.fields-login-logout .change-login-url .asenha-subfields');
       $('.change-login-url-description').appendTo('.fields-login-logout .change-login-url .asenha-subfields');
       $('.login-id-type-restriction').appendTo('.fields-login-logout > table > tbody');
@@ -187,6 +311,7 @@
       
       $('.site-identity-on-login').appendTo('.fields-login-logout > table > tbody');
       $('.enable-login-logout-menu').appendTo('.fields-login-logout > table > tbody');
+      
       $('.enable-last-login-column').appendTo('.fields-login-logout > table > tbody');
       $('.registration-date-column').appendTo('.fields-login-logout > table > tbody');
       $('.redirect-after-login').appendTo('.fields-login-logout > table > tbody');
@@ -208,6 +333,7 @@
       
       $('.custom-frontend-css').appendTo('.fields-custom-code .enable-custom-frontend-css .asenha-subfields');
       $('.insert-head-body-footer-code').appendTo('.fields-custom-code > table > tbody');
+      $('.disable-code-unslash').appendTo('.fields-custom-code .insert-head-body-footer-code .asenha-subfields');
       $('.head-code-priority').appendTo('.fields-custom-code .insert-head-body-footer-code .asenha-subfields');
       $('.head-code').appendTo('.fields-custom-code .insert-head-body-footer-code .asenha-subfields');
       $('.body-code-priority').appendTo('.fields-custom-code .insert-head-body-footer-code .asenha-subfields');
@@ -233,7 +359,9 @@
       $('.disable-rest-api').appendTo('.fields-disable-components > table > tbody');
       
       $('.disable-feeds').appendTo('.fields-disable-components > table > tbody');
+      $('.disable-embeds').appendTo('.fields-disable-components > table > tbody');
       $('.disable-all-updates').appendTo('.fields-disable-components > table > tbody');
+      $('.disable-author-archives').appendTo('.fields-disable-components > table > tbody');
       $('.disable-smaller-components').appendTo('.fields-disable-components > table > tbody');
       $('.disable-head-generator-tag').appendTo('.fields-disable-components .disable-smaller-components .asenha-subfields');
       $('.disable-feed-generator-tag').appendTo('.fields-disable-components .disable-smaller-components .asenha-subfields');
@@ -246,6 +374,7 @@
       $('.disable-jquery-migrate').appendTo('.fields-disable-components .disable-smaller-components .asenha-subfields');
       $('.disable-block-widgets').appendTo('.fields-disable-components .disable-smaller-components .asenha-subfields');
       $('.disable-lazy-load').appendTo('.fields-disable-components .disable-smaller-components .asenha-subfields');
+      $('.disable-application-passwords').appendTo('.fields-disable-components .disable-smaller-components .asenha-subfields');
       $('.disable-plugin-theme-editor').appendTo('.fields-disable-components .disable-smaller-components .asenha-subfields');
 
       // Place fields into "Security" tab
@@ -253,7 +382,10 @@
       $('.login-fails-allowed').appendTo('.fields-security .limit-login-attempts .asenha-subfields');
       $('.login-lockout-maxcount').appendTo('.fields-security .limit-login-attempts .asenha-subfields');
       
+      $('.limit-login-attempts-header-override').appendTo('.fields-security .limit-login-attempts .asenha-subfields');
+      $('.limit-login-attempts-header-override-description').appendTo('.fields-security .limit-login-attempts .asenha-subfields');
       $('.login-attempts-log-table').appendTo('.fields-security .limit-login-attempts .asenha-subfields');
+      
       $('.obfuscate-author-slugs').appendTo('.fields-security > table > tbody');
       $('.obfuscate-email-address').appendTo('.fields-security > table > tbody');
       $('.obfuscate-email-address-description').appendTo('.fields-security .obfuscate-email-address .asenha-subfields');
@@ -266,6 +398,7 @@
       $('.image-max-height').appendTo('.fields-optimizations .image-upload-control .asenha-subfields');
       
       $('.image-upload-control-description').appendTo('.fields-optimizations .image-upload-control .asenha-subfields');
+      
       $('.enable-revisions-control').appendTo('.fields-optimizations > table > tbody');
       $('.revisions-max-number').appendTo('.fields-optimizations .enable-revisions-control .asenha-subfields');
       $('.enable-revisions-control-for').appendTo('.fields-optimizations .enable-revisions-control .asenha-subfields');
@@ -288,6 +421,7 @@
       $('.smtp-host').appendTo('.fields-utilities .smtp-email-delivery .asenha-subfields');
       $('.smtp-port').appendTo('.fields-utilities .smtp-email-delivery .asenha-subfields');
       $('.smtp-security').appendTo('.fields-utilities .smtp-email-delivery .asenha-subfields');
+      
       $('.smtp-username').appendTo('.fields-utilities .smtp-email-delivery .asenha-subfields');
       $('.smtp-password').appendTo('.fields-utilities .smtp-email-delivery .asenha-subfields');
       $('.smtp-bypass-ssl-verification').appendTo('.fields-utilities .smtp-email-delivery .asenha-subfields');
@@ -403,35 +537,8 @@
 
       
 
-      // Show and hide corresponding fields on tab clicks
-
-      $('#tab-content-management + label').click( function() {
-         $('.fields-content-management').show();
-         $('.asenha-fields:not(.fields-content-management)').hide();
-         window.location.hash = 'content-management';
-         Cookies.set('asenha_tab', 'content-management', { expires: 1 }); // expires in 1 day
-      });
-
-      $('#tab-admin-interface + label').click( function() {
-         $('.fields-admin-interface').show();
-         $('.asenha-fields:not(.fields-admin-interface)').hide();
-         window.location.hash = 'admin-interface';
-         Cookies.set('asenha_tab', 'admin-interface', { expires: 1 }); // expires in 1 day
-      });
-
-      $('#tab-login-logout + label').click( function() {
-         $('.fields-login-logout').show();
-         $('.asenha-fields:not(.fields-login-logout)').hide();
-         window.location.hash = 'login-logout';
-         Cookies.set('asenha_tab', 'login-logout', { expires: 1 }); // expires in 1 day
+      function refreshCodeMirror() {
          
-      });
-
-      $('#tab-custom-code + label').click( function() {
-         $('.fields-custom-code').show();
-         $('.asenha-fields:not(.fields-custom-code)').hide();
-         window.location.hash = 'custom-code';
-         Cookies.set('asenha_tab', 'custom-code', { expires: 1 }); // expires in 1 day
          adminCssEditor.refresh(); // Custom Admin CSS >> CodeMirror
          frontendCssEditor.refresh(); // Custom Fronend CSS >> CodeMirror
          adsTxtEditor.refresh(); // Manage ads.txt >> CodeMirror
@@ -440,44 +547,62 @@
          bodyCodeEditor.refresh(); // Insert <head>, <body> and <footer> code >> CodeMirror
          footerCodeEditor.refresh(); // Insert <head>, <body> and <footer> code >> CodeMirror
          robotsTxtEditor.refresh(); // Manage robots.txt >> CodeMirror
+                  
+      }
+
+      // Show and hide corresponding fields on tab clicks
+
+      function tabSwitcher( tabSlug ) {
+         $('.asenha-fields.fields-'+tabSlug).addClass('section-visible');
+         $('.asenha-fields.fields-'+tabSlug).removeClass('section-hidden');
+         $('.asenha-fields:not(.fields-'+tabSlug+')').removeClass('section-visible');
+         $('.asenha-fields:not(.fields-'+tabSlug+')').addClass('section-hidden');
+         window.location.hash = tabSlug;
+         Cookies.set('asenha_tab', tabSlug, { expires: 1 }); // expires in 1 day
+      }
+
+      $('#tab-content-management + label').click( function() {
+         tabSwitcher('content-management');
+      });
+
+      $('#tab-admin-interface + label').click( function() {
+         tabSwitcher('admin-interface');
+      });
+
+      $('#tab-login-logout + label').click( function() {
+         tabSwitcher('login-logout');
+         refreshCodeMirror();
+      });
+
+      $('#tab-custom-code + label').click( function() {
+         tabSwitcher('custom-code');
+         refreshCodeMirror();
       });
 
       $('#tab-disable-components + label').click( function() {
-         $('.fields-disable-components').show();
-         $('.asenha-fields:not(.fields-disable-components)').hide();
-         window.location.hash = 'disable-components';
-         Cookies.set('asenha_tab', 'disable-components', { expires: 1 }); // expires in 1 day
+         tabSwitcher('disable-components');
       });
 
       $('#tab-security + label').click( function() {
-         $('.fields-security').show();
-         $('.asenha-fields:not(.fields-security)').hide();
-         window.location.hash = 'security';
-         Cookies.set('asenha_tab', 'security', { expires: 1 }); // expires in 1 day
+         tabSwitcher('security');
       });
 
       $('#tab-optimizations + label').click( function() {
-         $('.fields-optimizations').show();
-         $('.asenha-fields:not(.fields-optimizations)').hide();
-         window.location.hash = 'optimizations';
-         Cookies.set('asenha_tab', 'optimizations', { expires: 1 }); // expires in 1 day
+         tabSwitcher('optimizations');
       });
 
       $('#tab-utilities + label').click( function() {
-         $('.fields-utilities').show();
-         $('.asenha-fields:not(.fields-utilities)').hide();
-         window.location.hash = 'utilities';
-         Cookies.set('asenha_tab', 'utilities', { expires: 1 }); // expires in 1 day
-         
+         tabSwitcher('utilities');
+         refreshCodeMirror();
       });
 
       // Open tab set in 'asenha_tab' cookie set on saving changes. Defaults to content-management tab when cookie is empty
       var asenhaTabHash = Cookies.get('asenha_tab');
 
       if (typeof asenhaTabHash === 'undefined') {
-         $('#tab-content-management + label').trigger('click');         
+         $('#tab-content-management + label').trigger('click');
       } else {
-         $('#tab-' + asenhaTabHash + ' + label').trigger('click');         
+         $('#tab-' + asenhaTabHash + ' + label').trigger('click');
       }
       
       // Show or hide subfields on document ready and on toggle click
@@ -568,6 +693,7 @@
       subfieldsToggler( 'enable_duplication', 'enable-duplication' );
       subfieldsToggler( 'content_order', 'content-order' );
       
+      subfieldsToggler( 'enable_media_replacement', 'enable-media-replacement' );
       subfieldsToggler( 'enable_svg_upload', 'enable-svg-upload' );
       subfieldsToggler( 'enable_avif_upload', 'enable-avif-upload' );
       
@@ -601,6 +727,7 @@
       
       subfieldsToggler( 'disable_smaller_components', 'disable-smaller-components' );
       subfieldsToggler( 'limit_login_attempts', 'limit-login-attempts' );
+      
       subfieldsToggler( 'obfuscate_email_address', 'obfuscate-email-address' );
       subfieldsToggler( 'image_upload_control', 'image-upload-control' );
       subfieldsToggler( 'enable_revisions_control', 'enable-revisions-control' );
@@ -649,6 +776,8 @@
 
       subfieldsToggler( 'smtp_email_delivery', 'smtp-email-delivery' );
 
+      
+      
       // SMTP Email Delivery => Empty field value on click, so new password can be easily entered
       var oldSmtpPassValue = '';
 
@@ -684,12 +813,30 @@
       
 
       
-
       
+      // Content Toggler
+      $('.asenha-body').on('click', '.asenha-content-toggler', function(e) {
+         e.preventDefault();
+         var targetSelector = $(this).data('target-selector');
+         var showText = $(this).data('show-text');
+         var hideText = $(this).data('hide-text');
+         var expanded = $(this).attr('data-expanded');
+         // $(targetSelector).toggle();
+         if (expanded == 'no') {
+            $(targetSelector).slideDown(200);
+            $(this).html(hideText + ' <span>▲</span>');
+            $(this).attr('data-expanded','yes');
+         } else {
+            $(targetSelector).slideUp(200);
+            $(this).html(showText + ' <span>▼</span>');
+            $(this).attr('data-expanded','no');
+         }
+      });
       
       // Media frame handler for image selection / upload fields
       // Reference: https://plugins.trac.wordpress.org/browser/bm-custom-login/trunk/bm-custom-login.php
       function media_frame_init( selector, button_selector ) {
+         // media_frame_init( '#login-page-logo-image', '#login-page-logo-image-button' );
          var theSelector = $(selector);
          var button = $(button_selector);
 
@@ -723,6 +870,24 @@
                   var url = attachment.attributes.url;
                   url = url.replace( adminPageVars.wpcontentUrl, '' );
                   theSelector.val(url);
+
+                  if ( '#login-page-logo-image' == selector ) {
+                     var attachmentId = $('.login-page-logo-image-attachment-id input');
+                     var originalWidthInput = $('.login-page-logo-image-width-original input');
+                     var originalHeightInput = $('.login-page-logo-image-height-original input');
+                     var widthInput = $('.login-page-logo-image-width input');
+                     var heightInput = $('.login-page-logo-image-height input');
+                     attachmentId.val(attachment.attributes.id);
+                     originalWidthInput.val(attachment.attributes.width);
+                     originalHeightInput.val(attachment.attributes.height);
+                     widthInput.val(attachment.attributes.width);
+                     heightInput.val(attachment.attributes.height);                     
+                  }
+
+                  if ( '#form-builder-email-header-image' == selector ) {
+                     var attachmentId = $('.form-builder-email-header-image-attachment-id input');
+                     attachmentId.val(attachment.attributes.id);
+                  }
                });
             };
 
@@ -731,60 +896,126 @@
             wp.media.frames.frame.open();
          });
       }
+
+      // Form Builder - Empty out stored/hidden attachment ID when "Email header image" field is emptied
+      var emailHeaderImage = $('#form-builder-email-header-image');
+      var emailHeaderImageAttachmentId = $('.form-builder-email-header-image-attachment-id input');
+      
+      $(emailHeaderImage).keyup(delay(function (e) {
+         if ($(this).val().length === 0) {
+            emailHeaderImageAttachmentId.val("");
+         }
+      }, 200));
+
+      // =============== Image Ratio Calculator / Preservation for Login Page Customizer >> Logo Image =================
+
+      // Code modified from: https://codepen.io/tobiasdev/pen/XNjxdZ by Tobias Bogliolo
+
+      var initialWidth, initialHeight, newWidth, newHeight, aspectRatio;
+
+      //Get new values:
+      function getValues(){
+         initialWidth = $(".login-page-logo-image-width-original input").val();
+         initialHeight = $(".login-page-logo-image-height-original input").val();
+         newWidth = $(".login-page-logo-image-width input").val();
+         newHeight = $(".login-page-logo-image-height input").val();
+      };
+
+      //Aspect ratio:
+      function getAspectRatio(){
+         // Formula: "Aspect Ratio = Width / Height".
+         return aspectRatio = initialWidth/initialHeight;
+      };
+
+      //Get new height:
+      $(".login-page-logo-image-width input").on("change keyup", function(){
+         // Refresh data.
+         getValues();
+         getAspectRatio();
+         // New height = new width / (original width / original height).
+         newHeight = Math.round(newWidth/aspectRatio);
+         // Output:
+         $(".login-page-logo-image-height input").val(newHeight);
+      });
+
+      //Get new width:
+      $(".login-page-logo-image-height input").on("change keyup", function(){
+         // Refresh data.
+         getValues();
+         getAspectRatio();
+         // New width = (original width / original height) * new height.
+         newWidth = Math.round(newHeight*aspectRatio);
+         // Output:
+         $(".login-page-logo-image-width input").val(newWidth);
+      });
+
+      //Reset:
+      $(".login-page-logo-image-width-original input, .login-page-logo-image-height-original input").on("change keyup", function(){
+         // Output:
+         $(".login-page-logo-image-width input").val("");
+         $(".login-page-logo-image-height input").val("");
+      });
             
       // =============== ASE PRO =================
 
-      // Upgrade nudge to Pro
-      if ( asenhaStats.hideUpgradeNudge ) {
-         $('.asenha-upgrade-nudge').hide();
-         $('#bottom-upgrade-nudge').show();
-      } else {
-         $('.asenha-upgrade-nudge').show();
-         $('#bottom-upgrade-nudge').hide();
-      }
+      if ( asenhaStats.isYearEndPromoPeriod ) {
 
-      $('#dismiss-upgrade-nudge').click(function(e) {
-         e.preventDefault();
-         $.ajax({
-            url: ajaxurl,
-            data: {
-               'action':'dismiss_upgrade_nudge'
-            },
-            success:function(data) {
-               $('.asenha-upgrade-nudge').hide();
-               // $('#bottom-upgrade-nudge').show();
-            },
-            error:function(errorThrown) {
-               console.log(errorThrown);
-            }
+         // Promo nudge
+         if ( asenhaStats.hidePromoNudge ) {
+            $('.asenha-promo-nudge').hide();
+            $('#bottom-upgrade-nudge').show();
+         } else {
+            $('.asenha-promo-nudge').show();
+            $('#bottom-upgrade-nudge').hide();
+         }
+         
+         $('#dismiss-promo-nudge').click(function(e) {
+            e.preventDefault();
+            $.ajax({
+               url: ajaxurl,
+               data: {
+                  'action':'dismiss_promo_nudge',
+                  'nonce': adminPageVars.nonce
+               },
+               success:function(data) {
+                  $('.asenha-promo-nudge').hide();
+               },
+               error:function(errorThrown) {
+                  console.log(errorThrown);
+               }
+            });
          });
-      });
-      
-      // Promo nudge
-
-      if ( asenhaStats.hidePromoNudge ) {
-         $('.asenha-promo-nudge').hide();
-         $('#bottom-upgrade-nudge').show();
+         
       } else {
-         $('.asenha-promo-nudge').show();
-         $('#bottom-upgrade-nudge').hide();
-      }
-      
-      $('#dismiss-promo-nudge').click(function(e) {
-         e.preventDefault();
-         $.ajax({
-            url: ajaxurl,
-            data: {
-               'action':'dismiss_promo_nudge'
-            },
-            success:function(data) {
-               $('.asenha-promo-nudge').hide();
-            },
-            error:function(errorThrown) {
-               console.log(errorThrown);
-            }
+
+         // Upgrade nudge to Pro
+         if ( asenhaStats.hideUpgradeNudge ) {
+            $('.asenha-upgrade-nudge').hide();
+            $('#bottom-upgrade-nudge').show();
+         } else {
+            $('.asenha-upgrade-nudge').show();
+            $('#bottom-upgrade-nudge').hide();
+         }
+
+         $('#dismiss-upgrade-nudge').click(function(e) {
+            e.preventDefault();
+            $.ajax({
+               url: ajaxurl,
+               data: {
+                  'action':'dismiss_upgrade_nudge',
+                  'nonce': adminPageVars.nonce
+               },
+               success:function(data) {
+                  $('.asenha-upgrade-nudge').hide();
+                  // $('#bottom-upgrade-nudge').show();
+               },
+               error:function(errorThrown) {
+                  console.log(errorThrown);
+               }
+            });
          });
-      });
+
+      }
       
       // =============== SPONSORSHIP =================
 
@@ -799,16 +1030,17 @@
 
       $('#have-shared,#have-reviewed').click(function(e) {
          e.preventDefault();
-         $.ajax({
-            url: 'https://bowo.io/asenha-sp-ndg',
-            method: 'GET',
-            dataType: 'jsonp',
-            crossDomain: true
-         });
+         // $.ajax({
+         //    url: 'https://bowo.io/asenha-sp-ndg',
+         //    method: 'GET',
+         //    dataType: 'jsonp',
+         //    crossDomain: true
+         // });
          $.ajax({
             url: ajaxurl,
             data: {
-               'action':'have_supported'
+               'action':'have_supported',
+               'nonce': adminPageVars.nonce
             },
             success:function(data) {
                $('.asenha-support-nudge').hide();
@@ -821,16 +1053,17 @@
       
       $('#support-nudge-dismiss').click(function(e) {
          e.preventDefault();
-         $.ajax({
-            url: 'https://bowo.io/asenha-sp-ndg',
-            method: 'GET',
-            dataType: 'jsonp',
-            crossDomain: true
-         });
+         // $.ajax({
+         //    url: 'https://bowo.io/asenha-sp-ndg',
+         //    method: 'GET',
+         //    dataType: 'jsonp',
+         //    crossDomain: true
+         // });
          $.ajax({
             url: ajaxurl,
             data: {
-               'action':'dismiss_support_nudge'
+               'action':'dismiss_support_nudge',
+               'nonce': adminPageVars.nonce
             },
             success:function(data) {
                $('.asenha-support-nudge').hide();

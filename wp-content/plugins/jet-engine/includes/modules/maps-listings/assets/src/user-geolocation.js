@@ -13,7 +13,8 @@ const {
 const {
 	PanelBody,
 	SelectControl,
-	Disabled
+	Disabled,
+	TextControl
 } = wp.components;
 
 const {
@@ -38,6 +39,10 @@ registerBlockType( 'jet-smart-filters/user-geolocation', {
 		content_provider: {
 			type: 'string',
 			default: 'not-selected',
+		},
+		query_id: {
+			type: 'string',
+			default: '',
 		},
 	},
 	className: 'jet-smart-filters-alphabet',
@@ -71,7 +76,7 @@ registerBlockType( 'jet-smart-filters/user-geolocation', {
 							<div>
 								<h4 style={{margin:'5px 0 0'}}>Please note!</h4>
 								<p style={{ color: '#757575', fontSize: '12px' }}>
-									This filter is compatible only with queries from JetEngine Query Builder. ALso you need to set up <a href="https://crocoblock.com/knowledge-base/jetengine/how-to-set-geo-search-based-on-user-geolocation/" target="_blank">Geo Query</a> in your query settings to meke filter to work correctly.
+									This filter is compatible only with queries from JetEngine Query Builder. ALso you need to set up <a href="https://crocoblock.com/knowledge-base/jetengine/how-to-set-geo-search-based-on-user-geolocation/" target="_blank">Geo Query</a> in your query settings to make the filter work correctly.
 								</p>
 							</div>
 							<SelectControl
@@ -88,6 +93,15 @@ registerBlockType( 'jet-smart-filters/user-geolocation', {
 								options={ this.getOtptionsFromObject( window.JetSmartFilterBlocksData.providers ) }
 								onChange={ newValue => {
 									props.setAttributes({ content_provider: newValue });
+								} }
+							/>
+							<TextControl
+								type="text"
+								label={ __( 'Query ID' ) }
+								help={ __( 'Set unique query ID if you use multiple blocks of same provider on the page. Same ID you need to set for filtered block.' ) }
+								value={ props.attributes.query_id }
+								onChange={ newValue => {
+									props.setAttributes( { query_id: newValue } );
 								} }
 							/>
 						</PanelBody>

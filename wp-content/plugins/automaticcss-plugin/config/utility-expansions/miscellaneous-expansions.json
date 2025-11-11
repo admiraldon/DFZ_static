@@ -6,7 +6,7 @@
 			"expandTo": "/* Begin Clickable Parent\nEnsure this is placed on the clickable parent element. */\n%root%:has(a) {\n\tposition: relative;\n}\n/* Configure your selector if you have more than one link */\n%root% a::after {\n\tcontent: \"\";\n\tposition: absolute;\n\tinset: 0;\n\tz-index: 10;\n}\n/* Remove effect in builder.\nSet target.\nBricks = .bricks-area */\n.target %root% a::after {\n\tcontent: \"\";\n\tposition: relative;\n}\n/* End Clickable Parent */"
 		},
 		"focus-parent": {
-			"expandTo": "/* Begin Focus Parent */\n%root%:focus-within {\n\toutline: var(--focus-width) solid var(--focus-color);\n\toutline-offset: var(--focus-offset);\n}\n%root% :focus {\n\toutline: none !important;\n\tbox-shadow: none !important;\n}\n/* End Focus Parent */"
+			"expandTo": "/* Begin Focus Parent */\n%root%:focus-within:not(:has(:focus-visible)) {\noutline: none;\noutline-offset: 0;\nbox-shadow: none;\n}\n%root%:focus-within {\noutline: var(--focus-width) solid var(--focus-color);\noutline-offset: var(--focus-offset);\n}\n\n%root% :focus {\noutline: none !important;\nbox-shadow: none !important;\n}\n/* End Focus Parent */"
 		},
 		"columns": {
 			"expandTo": "/* Auto-responsive columns */\n%root% {\n\t--col-count: auto;\n\t--col-min-width: 250px;\n\t--col-rule-style: solid;\n\t--col-rule-width: 1px;\n\t--col-rule-color: var(--black);\n\t--col-gap: var(--grid-gap);\n\t--row-gap: var(--grid-gap);\n}\n\n%root% {\ndisplay: block !important;\n\tcolumns: var(--col-count) var(--col-min-width);\n\tcolumn-rule-style: var(--col-rule-style);\n\tcolumn-rule-width: var(--col-rule-width);\n\tcolumn-rule-color: var(--col-rule-color);\n\tgap: var(--col-gap);\n}\n\n%root% > * {\n\tbreak-inside: avoid;\n\tmargin-block-end: var(--row-gap);\n}"
@@ -43,6 +43,27 @@
 		},
 		"list-none": {
 			"expandTo": "/* \nBegin List None\nChange selector to %root% > ul\" if\nusing on a parent container or rich text element.\n*/\n%root% {\n\tlist-style: none;\n\tpadding-inline-start: 0;\n\tmargin-block: 0;\n}\n/* End List None */"
+		},
+		"border": {
+			"expandTo": "/* Begin Border */\n%root%:where(:not(:is(figure, picture))), %root%:where(figure, picture) > img {\nborder: var(--border);\nborder-radius: var(--radius);\n}\n/* End Border */"
+		},
+		"fade-block": {
+			"expandTo": "/* Begin Fade Block */\n%root% {\n  --fade-amount: 25%;\n  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black var(--fade-amount), black calc(100% - var(--fade-amount)), transparent 100%);\n  mask-image: linear-gradient(to bottom, transparent 0%, black var(--fade-amount), black calc(100% - var(--fade-amount)), transparent 100%);\n}\n/* End Fade Block */"
+		},
+		"fade-inline": {
+			"expandTo": "/* Begin Fade Inline */\n%root% {\n  --fade-amount: 25%;\n  -webkit-mask-image: linear-gradient(to right, transparent 0%, black var(--fade-amount), black calc(100% - var(--fade-amount)), transparent 100%);\n  mask-image: linear-gradient(to right, transparent 0%, black var(--fade-amount), black calc(100% - var(--fade-amount)), transparent 100%);\n}\n/* End Fade Inline */"
+		},
+		"fade-top": {
+			"expandTo": "/* Begin Fade Top */\n%root% {\n  --fade-amount: 25%;\n  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black var(--fade-amount));\n  mask-image: linear-gradient(to bottom, transparent 0%, black var(--fade-amount));\n}\n/* End Fade Top */"
+		},
+		"fade-right": {
+			"expandTo": "/* Begin Fade Right */\n%root% {\n  --fade-amount: 25%;\n  -webkit-mask-image: linear-gradient(to left, transparent 0%, black var(--fade-amount));\n  mask-image: linear-gradient(to left, transparent 0%, black var(--fade-amount));\n}\n/* End Fade Right */"
+		},
+		"fade-bottom": {
+			"expandTo": "/* Begin Fade Bottom */\n%root% {\n  --fade-amount: 25%;\n  -webkit-mask-image: linear-gradient(to top, transparent 0%, black var(--fade-amount));\n  mask-image: linear-gradient(to top, transparent 0%, black var(--fade-amount));\n}\n/* End Fade Bottom */"
+		},
+		"fade-left": {
+			"expandTo": "/* Begin Fade Left */\n%root% {\n  --fade-amount: 25%;\n  -webkit-mask-image: linear-gradient(to right, transparent 0%, black var(--fade-amount));\n  mask-image: linear-gradient(to right, transparent 0%, black var(--fade-amount));\n}\n/* End Fade Left */"
 		}
 	}
 }

@@ -1,4 +1,4 @@
-/* File: automatic-gutenberg.css - Version: 3.2.7 - Generated: 2024-12-12 10:43:42 */
+/* File: automatic-gutenberg.css - Version: 3.3.6 - Generated: 2025-11-11 13:44:49 */
 :root {
   --wp-page-block-width: 100%;
   --wp-post-block-width: 767px;
@@ -180,10 +180,11 @@
   --btn-border-color-hover: var(--neutral-light);
   --focus-color: var(--neutral-light);
 }
-[class*="btn--"]:not(.wp-block-button, .btn--none), .wp-block-button[class*="btn--"] > .wp-block-button__link, .wp-block-button[class*="btn--"] > a {
+[class*="btn--"]:not(.btn--none, .wp-block-button), .wp-block-button[class*="btn--"] > .wp-block-button__link, .wp-block-button[class*="btn--"] > a {
   background: var(--btn-background);
   color: var(--btn-text-color);
-  padding: var(--btn-padding-block) var(--btn-padding-inline);
+  padding-block: var(--btn-padding-block);
+  padding-inline: var(--btn-padding-inline);
   min-inline-size: var(--btn-min-width);
   line-height: var(--btn-line-height);
   font-size: var(--btn-font-size, var(--text-m));
@@ -201,14 +202,14 @@
   text-align: var(--btn-text-align, center);
 }
 @media (hover: hover) and (pointer: fine) {
-  [class*="btn--"]:not(.wp-block-button, .btn--none):hover, .wp-block-button[class*="btn--"] > .wp-block-button__link:hover, .wp-block-button[class*="btn--"] > a:hover {
+  [class*="btn--"]:not(.btn--none, .wp-block-button):hover, .wp-block-button[class*="btn--"] > .wp-block-button__link:hover, .wp-block-button[class*="btn--"] > a:hover {
     background: var(--btn-background-hover);
     color: var(--btn-text-color-hover);
     border-color: var(--btn-border-color-hover);
     text-decoration: var(--btn-text-decoration-hover);
   }
 }
-[class*="btn--"]:not(.wp-block-button, .btn--none):focus, .wp-block-button[class*="btn--"] > .wp-block-button__link:focus, .wp-block-button[class*="btn--"] > a:focus {
+[class*="btn--"]:not(.btn--none, .wp-block-button):focus, .wp-block-button[class*="btn--"] > .wp-block-button__link:focus, .wp-block-button[class*="btn--"] > a:focus {
   outline-style: solid;
   outline-color: var(--focus-color);
   outline-width: var(--focus-width);

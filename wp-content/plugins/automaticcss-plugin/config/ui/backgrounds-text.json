@@ -192,9 +192,15 @@
 									"type": "text",
 									"default": "primary",
 									"skip-if-empty": true,
-
 									"tooltip": "Expects the name of a button style (primary, secondary, etc.). You can attach '.btn--outline' to style name for outline variations",
 									"output": "quotes"
+								},
+								{
+									"id": "bg-ultra-light-focus-color",
+									"title": "Focus Color",
+									"type": "text",
+									"default": "",
+									"skip-if-empty": true
 								}
 							]
 						},
@@ -260,6 +266,13 @@
 
 									"tooltip": "Expects the name of a button style (primary, secondary, etc.). You can attach '.btn--outline' to style name for outline variations",
 									"output": "quotes"
+								},
+								{
+									"id": "bg-light-focus-color",
+									"title": "Focus Color",
+									"type": "text",
+									"default": "",
+									"skip-if-empty": true
 								}
 							]
 						}
@@ -343,6 +356,13 @@
 
 									"tooltip": "Expects the name of a button style (primary, secondary, etc.). You can attach '.btn--outline' to style name for outline variations",
 									"output": "quotes"
+								},
+								{
+									"id": "bg-ultra-dark-focus-color",
+									"title": "Focus Color",
+									"type": "text",
+									"default": "",
+									"skip-if-empty": true
 								}
 							]
 						},
@@ -408,6 +428,13 @@
 
 									"tooltip": "Expects the name of a button style (primary, secondary, etc.). You can attach '.btn--outline' to style name for outline variations",
 									"output": "quotes"
+								},
+								{
+									"id": "bg-dark-focus-color",
+									"title": "Focus Color",
+									"type": "text",
+									"default": "",
+									"skip-if-empty": true
 								}
 							]
 						}
@@ -463,7 +490,7 @@
 											"title": "Texture Asset",
 											"type": "textarea",
 											"default": "",
-											"placeholder": "url(link-to-image.webp)",
+											"placeholder": "/path-to-image.png",
 											"skip-if-empty": true,
 
 											"cssVariable": "none",
@@ -668,7 +695,7 @@
 											"title": "Texture Asset",
 											"type": "textarea",
 											"default": "",
-											"placeholder": "url(link-to-image.webp)",
+											"placeholder": "/path-to-image.png",
 											"skip-if-empty": true,
 
 											"cssVariable": "none",
@@ -871,7 +898,7 @@
 											"title": "Texture Asset",
 											"type": "textarea",
 											"default": "",
-											"placeholder": "url(link-to-image.webp)",
+											"placeholder": "/path-to-image.png",
 											"skip-if-empty": true,
 
 											"cssVariable": "none",
@@ -1074,7 +1101,7 @@
 											"title": "Texture Asset",
 											"type": "textarea",
 											"default": "",
-											"placeholder": "url(link-to-image.webp)",
+											"placeholder": "/path-to-image.png",
 											"skip-if-empty": true,
 
 											"cssVariable": "none",
@@ -1277,7 +1304,7 @@
 											"title": "Texture Asset",
 											"type": "textarea",
 											"default": "",
-											"placeholder": "url(link-to-image.webp)",
+											"placeholder": "/path-to-image.png",
 											"skip-if-empty": true,
 
 											"cssVariable": "none",

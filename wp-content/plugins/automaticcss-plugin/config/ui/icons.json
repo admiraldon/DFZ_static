@@ -9,9 +9,9 @@
 	"content": [
 		{
 			"id": "option-icons",
-			"title": "Icon Framework (Experimental)",
+			"title": "Icon Framework",
 			"type": "toggle",
-			"default": "off",
+			"default": "on",
 			"style": "primary",
 			"tooltip": "Activate the Icon Framework for styling icons.",
 			"documentation": "https://automaticcss.com/docs/icon-framework/"
@@ -23,12 +23,12 @@
 			"displayWhen": ["option-icons", "on"],
 			"content": [
 				{
-					"id": "icon-default-style",
-					"title": "Default Icon Style",
+					"id": "icon-default-theme",
+					"title": "Default Icon Theme",
 					"type": "select",
-					"default": "light",
+					"default": "dark",
 					"options": ["dark", "light"],
-					"tooltip": "Default icon style.",
+					"tooltip": "Default icon theme. Light background typically calls for dark icon theme and vice versa.",
 					"documentation": "https://automaticcss.com/docs/icon-framework/"
 				},
 				{
@@ -37,7 +37,6 @@
 					"type": "text",
 					"default": ".35em",
 					"cssVariable": "--icon-padding",
-					"displayWhen": ["option-boxed-icons", "on"],
 					"tooltip": "Default padding for boxed icon style.",
 					"documentation": "https://automaticcss.com/docs/icon-framework/"
 				},
@@ -46,7 +45,6 @@
 					"title": "Icon Border Width",
 					"type": "text",
 					"default": "var(--border-width)",
-					"displayWhen": ["option-boxed-icons", "on"],
 					"tooltip": "Default border width for boxed icon style.",
 					"documentation": "https://automaticcss.com/docs/icon-framework/"
 				},
@@ -55,7 +53,6 @@
 					"title": "Icon Border Style",
 					"type": "text",
 					"default": "var(--border-style)",
-					"displayWhen": ["option-boxed-icons", "on"],
 					"tooltip": "Default border style for boxed icon style.",
 					"documentation": "https://automaticcss.com/docs/icon-framework/"
 				},
@@ -65,7 +62,6 @@
 					"type": "text",
 					"default": "var(--radius)",
 
-					"displayWhen": ["option-boxed-icons", "on"],
 					"tooltip": "Default radius for boxed icon style.",
 					"documentation": "https://automaticcss.com/docs/icon-framework/"
 				}
@@ -77,6 +73,11 @@
 			"type": "accordion-container",
 			"displayWhen": ["option-icons", "on"],
 			"content": [
+				{
+					"id": "icon-sizes-message",
+					"type": "message",
+					"text": "You can activate additional icon sizes under 'Options' in this panel."
+				},
 				{
 					"id": "icon-size-xs-container",
 					"title": "Extra Small Icons",
@@ -98,7 +99,7 @@
 							"title": "Icon Padding (XS)",
 							"type": "text",
 							"default": "var(--icon-padding)",
-							"displayWhen": ["option-boxed-icons", "on"],
+
 							"cssVariable": "--icon-padding-xs",
 							"tooltip": "Padding for icons using XS utilities.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
@@ -125,7 +126,7 @@
 							"type": "text",
 							"default": "var(--icon-padding)",
 							"cssVariable": "--icon-padding-s",
-							"displayWhen": ["option-boxed-icons", "on"],
+
 							"tooltip": "Padding for icons using S utilities.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						}
@@ -151,7 +152,7 @@
 							"type": "text",
 							"default": "var(--icon-padding)",
 							"cssVariable": "--icon-padding-m",
-							"displayWhen": ["option-boxed-icons", "on"],
+
 							"tooltip": "Default icon padding.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						}
@@ -177,7 +178,7 @@
 							"type": "text",
 							"default": "var(--icon-padding)",
 							"cssVariable": "--icon-padding-l",
-							"displayWhen": ["option-boxed-icons", "on"],
+
 							"tooltip": "Padding for icons using L utilities.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						}
@@ -204,7 +205,7 @@
 							"type": "text",
 							"default": "var(--icon-padding)",
 							"cssVariable": "--icon-padding-xl",
-							"displayWhen": ["option-boxed-icons", "on"],
+
 							"tooltip": "Padding for icons using XL utilities.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						}
@@ -231,7 +232,7 @@
 							"type": "text",
 							"default": "var(--icon-padding)",
 							"cssVariable": "--icon-padding-xxl",
-							"displayWhen": ["option-boxed-icons", "on"],
+
 							"tooltip": "Padding for icons using XXL utilities.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						}
@@ -241,10 +242,15 @@
 		},
 		{
 			"id": "icon-dark-styles",
-			"title": "Dark Icon Styles",
+			"title": "Dark Icon Theme",
 			"type": "accordion-container",
 			"displayWhen": ["option-icons", "on"],
 			"content": [
+				{
+					"id": "dark-icon-theme-message",
+					"type": "message",
+					"text": "For maximum flexibility, set a dark icon color for the dark icon theme. Boxed styling (background color, etc.) is irrelevant."
+				},
 				{
 					"id": "icon-dark-color-combo",
 					"type": "hover-container",
@@ -253,16 +259,16 @@
 							"id": "icon-dark-color",
 							"title": "Icon Color",
 							"type": "text",
-							"default": "var(--primary-light)",
-							"tooltip": "Icon color for dark icon set.",
+							"default": "var(--primary-dark)",
+							"tooltip": "Icon color for dark icon theme.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						},
 						{
 							"id": "icon-dark-color-hover",
 							"title": "Icon Color Hvr",
 							"type": "text",
-							"default": "var(--primary-semi-light)",
-							"tooltip": "Icon color on hover for dark icon set.",
+							"default": "var(--primary-semi-dark)",
+							"tooltip": "Icon color on hover for dark icon theme.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						}
 					]
@@ -270,22 +276,21 @@
 				{
 					"id": "icon-dark-background-combo",
 					"type": "hover-container",
-					"displayWhen": ["option-boxed-icons", "on"],
 					"content": [
 						{
 							"id": "icon-dark-background",
 							"title": "Icon Background",
 							"type": "text",
-							"default": "var(--primary-dark)",
-							"tooltip": "Icon background color for dark icon set.",
+							"default": "var(--primary-light)",
+							"tooltip": "Icon background color for dark icon theme.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						},
 						{
 							"id": "icon-dark-background-hover",
 							"title": "Icon Background Hvr",
 							"type": "text",
-							"default": "var(--primary-semi-dark)",
-							"tooltip": "Icon background color on hover for dark icon set.",
+							"default": "var(--primary-ultra-light)",
+							"tooltip": "Icon background color on hover for dark icon theme.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						}
 					]
@@ -293,22 +298,21 @@
 				{
 					"id": "icon-dark-border-combo",
 					"type": "hover-container",
-					"displayWhen": ["option-boxed-icons", "on"],
 					"content": [
 						{
 							"id": "icon-dark-border-color",
 							"title": "Border Color",
 							"type": "text",
-							"default": "var(--border-color-dark)",
-							"tooltip": "Border color for dark icon set.",
+							"default": "var(--primary-dark-trans-10)",
+							"tooltip": "Border color for dark icon theme.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						},
 						{
 							"id": "icon-dark-border-color-hover",
 							"title": "Border Color Hvr",
 							"type": "text",
-							"default": "var(--border-color-dark)",
-							"tooltip": "Border color on hover for dark icon set.",
+							"default": "var(--primary-dark-trans-10)",
+							"tooltip": "Border color on hover for dark icon theme.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						}
 					]
@@ -319,18 +323,22 @@
 					"type": "textarea",
 					"default": "",
 					"placeholder": "--box-shadow-m",
-					"displayWhen": ["option-boxed-icons", "on"],
-					"tooltip": "Box shadow for dark icon set.",
+					"tooltip": "Box shadow for dark icon theme.",
 					"documentation": "https://automaticcss.com/docs/icon-framework/"
 				}
 			]
 		},
 		{
 			"id": "icon-light-styles",
-			"title": "Light Icon Styles",
+			"title": "Light Icon Theme",
 			"type": "accordion-container",
 			"displayWhen": ["option-icons", "on"],
 			"content": [
+				{
+					"id": "light-icon-theme-message",
+					"type": "message",
+					"text": "For maximum flexibility, set a light icon color for the light icon theme. Boxed styling (background color, etc.) is irrelevant."
+				},
 				{
 					"id": "icon-light-color-combo",
 					"type": "hover-container",
@@ -339,14 +347,14 @@
 							"id": "icon-light-color",
 							"title": "Icon Color",
 							"type": "text",
-							"default": "var(--primary-dark)",
+							"default": "var(--primary-light)",
 							"tooltip": "Icon color."
 						},
 						{
 							"id": "icon-light-color-hover",
 							"title": "Icon Color Hvr",
 							"type": "text",
-							"default": "var(--primary-semi-dark)",
+							"default": "var(--primary-ultra-light)",
 							"tooltip": "Icon color on hover."
 						}
 					]
@@ -354,20 +362,19 @@
 				{
 					"id": "icon-light-background-combo",
 					"type": "hover-container",
-					"displayWhen": ["option-boxed-icons", "on"],
 					"content": [
 						{
 							"id": "icon-light-background",
 							"title": "Icon Background",
 							"type": "text",
-							"default": "var(--primary-ultra-light)",
+							"default": "var(--primary-dark)",
 							"tooltip": "Icon background color."
 						},
 						{
 							"id": "icon-light-background-hover",
 							"title": "Icon Background Hvr",
 							"type": "text",
-							"default": "var(--primary-light)",
+							"default": "var(--primary-ultra-dark)",
 							"tooltip": "Icon background color on hover."
 						}
 					]
@@ -375,22 +382,21 @@
 				{
 					"id": "icon-light-border-combo",
 					"type": "hover-container",
-					"displayWhen": ["option-boxed-icons", "on"],
 					"content": [
 						{
 							"id": "icon-light-border-color",
 							"title": "Border Color",
 							"type": "text",
-							"default": "var(--border-color-light)",
-							"tooltip": "Border color for light icon set.",
+							"default": "var(--primary-dark-trans-10)",
+							"tooltip": "Border color for light icon theme.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						},
 						{
 							"id": "icon-light-border-color-hover",
 							"title": "Border Color Hvr",
 							"type": "text",
-							"default": "var(--border-color-light)",
-							"tooltip": "Border color on hover for light icon set.",
+							"default": "var(--primary-dark-trans-10)",
+							"tooltip": "Border color on hover for light icon theme.",
 							"documentation": "https://automaticcss.com/docs/icon-framework/"
 						}
 					]
@@ -401,7 +407,7 @@
 					"type": "textarea",
 					"default": "",
 					"placeholder": "--box-shadow-m",
-					"tooltip": "Shadow style for light icon set.",
+					"tooltip": "Shadow style for light icon theme.",
 					"documentation": "https://automaticcss.com/docs/icon-framework/",
 					"displayWhen": ["option-boxed-icons", "on"]
 				}
@@ -457,13 +463,13 @@
 		},
 		{
 			"id": "icon-options",
-			"title": "Options",
+			"title": "Icon Framework Options",
 			"type": "accordion-container",
 			"displayWhen": ["option-icons", "on"],
 			"content": [
 				{
 					"id": "option-boxed-icons",
-					"title": "Boxed Icons",
+					"title": "Boxed Icon Style by Default",
 					"type": "toggle",
 					"default": "on",
 					"tooltip": "Use boxed styling for icons. Enables padding, border, etc.",
