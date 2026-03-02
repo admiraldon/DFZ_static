@@ -24,14 +24,14 @@ html {
 	font-family: "Outfit-ACSS";
 	font-style: normal;
 	font-weight: 400;
-	src: url("https://dan-ontour.de/wp-content/plugins/automaticcss-plugin/assets/fonts/Outfit-Regular.woff") format("woff");
+	src: url("https://dein-frisurenzimmer.de/wp-content/plugins/automaticcss-plugin/assets/fonts/Outfit-Regular.woff") format("woff");
 }
 
 @font-face {
 	font-family: "Outfit-ACSS";
 	font-style: normal;
 	font-weight: 700;
-	src: url("https://dan-ontour.de/wp-content/plugins/automaticcss-plugin/assets/fonts/Outfit-Bold.woff") format("woff");
+	src: url("https://dein-frisurenzimmer.de/wp-content/plugins/automaticcss-plugin/assets/fonts/Outfit-Bold.woff") format("woff");
 }
 
 @keyframes plstr-overflow-delay {
